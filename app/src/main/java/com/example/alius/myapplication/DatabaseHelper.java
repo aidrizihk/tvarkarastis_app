@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.util.Log;
 
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     // --------------------------------VARIABLES---------------------------------------------
@@ -110,27 +111,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteStatement stmt = db.compileStatement(sql);
 
-        //for(int x = 1; x <= arr.; x++){
 
-            //stmt.bindString(arr);
-            stmt.bindLong(1, id);
-            stmt.bindString(2, pavadinimas);
-            stmt.bindString(3, elpastas);
-            stmt.bindLong(4, fakultetas);
-            stmt.bindLong(5, studijos);
-            stmt.bindLong(6, forma);
-            stmt.bindLong(7, istojimas);
+        stmt.bindLong(1, id);
+        stmt.bindString(2, pavadinimas);
+        stmt.bindString(3, elpastas);
+        stmt.bindLong(4, fakultetas);
+        stmt.bindLong(5, studijos);
+        stmt.bindLong(6, forma);
+        stmt.bindLong(7, istojimas);
 
-            stmt.execute();
-            stmt.clearBindings();
-
-        //}
+        stmt.execute();
+        stmt.clearBindings();
 
         db.setTransactionSuccessful();
         db.endTransaction();
 
         db.close();
 
-        Log.w("aliusa", "įdėta nauja grupė į sqlite");
+        Log.w("aliusa", "įdėta \"" + pavadinimas + "\" grupė į sqlite");
     }
 }
