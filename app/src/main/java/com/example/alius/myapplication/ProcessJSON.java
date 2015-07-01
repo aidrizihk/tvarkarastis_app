@@ -43,8 +43,8 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
                 for (int i = 0; i < allGroups.length(); i++) {
                     // Get single row.
                     JSONObject all_grupe = allGroups.getJSONObject(i);
-                    // Get the value of key "id" under JSONObject "grupe_record"
 
+                    // Insert values to SQLite.
                     db.addGrupeWithID(
                             all_grupe.getInt("id"),
                             all_grupe.getString("pavadinimas"),
