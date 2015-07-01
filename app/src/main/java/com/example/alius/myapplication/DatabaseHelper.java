@@ -3,6 +3,8 @@ package com.example.alius.myapplication;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
+import android.os.Build;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -33,6 +35,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + colFormaID + " INTEGER,"
                     + colistojimas + " INTEGER"
                     + ")";
+    String INDEX = "CREATE UNIQUE INDEX locations_index ON "
+            + grupeTable + " ("+colGrupePavadinimas+")";
 
     /**
      * Table Destytojas.
@@ -69,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Create tables with schemas.
         db.execSQL(CREATE_TABLE_GRUPE);
+        db.execSQL(INDEX);
         db.execSQL(CREATE_TABLE_DESTYTOJAS);
         db.execSQL(CREATE_TABLE_DALYKAS);
 
@@ -79,25 +84,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
     }*/
 
+    // When upgrading the database, it will drop the current table and recreate.
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_NAME);
+        String query = "DROP TABLE IF EXISTS " + DATABASE_NAME;
+        db.execSQL(query);
         onCreate(db);
     }
 
     public void addGrupeWithID(int id, String pavadinimas, String elpastas, int fakultetas, int studijos, int forma, int istojimas) {
+        // you can use INSERT only
+        String sql = "INSERT OR REPLACE INTO " + grupeTable + " VALUES(?,?,?,?,?,?,?)";
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "INSERT INTO " + grupeTable + " SET "
-                + " grupeID = " + id
-                + " colGrupePavadinimas = " + pavadinimas
-                + " colElpastas = " + elpastas
-                + " colFakultetasID = " + fakultetas
-                + " colStudijosID = " + studijos
-                + " colFormaID = " + forma
-                + " colistojimas = " + istojimas
-                ;
-        db.execSQL(query);
+
+        /*
+         * According to the docs http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
+         * Writers should use beginTransactionNonExclusive() or beginTransactionWithListenerNonExclusive(SQLiteTransactionListener)
+         * to start a transaction. Non-exclusive mode allows database file to be in readable by other threads executing queries.
+         */
+        if (Build.VERSION.SDK_INT > 11) {
+            db.beginTransactionNonExclusive();
+        } else {
+            db.beginTransaction();
+        }
+
+        SQLiteStatement stmt = db.compileStatement(sql);
+
+        //for(int x = 1; x <= arr.; x++){
+
+            //stmt.bindString(arr);
+            stmt.bindLong(1, id);
+            stmt.bindString(2, pavadinimas);
+            stmt.bindString(3, elpastas);
+            stmt.bindLong(4, fakultetas);
+            stmt.bindLong(5, studijos);
+            stmt.bindLong(6, forma);
+            stmt.bindLong(7, istojimas);
+
+            stmt.execute();
+            stmt.clearBindings();
+
+        //}
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
         db.close();
+
         Log.w("aliusa", "įdėta nauja grupė į sqlite");
     }
 }

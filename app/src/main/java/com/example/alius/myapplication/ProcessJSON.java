@@ -15,7 +15,7 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
 
     // Hashmap for ListView
     //ArrayList<HashMap<String, String>> contactList;
-
+    private Context context;
     protected String doInBackground(String... strings){
         String stream = null;
         String urlString = strings[0];
@@ -27,18 +27,24 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
         return stream;
     }
 
+    public ProcessJSON(Context context) {
+        this.context = context;
+    }
+
     protected void onPostExecute(String stream){
         //TextView tv = (TextView) findViewById(R.id.tv);
         //tv.setText(stream);
 
         //..........Process JSON DATA................
-        if(stream !=null){
+        if(stream != null){
             try{
                 // Get the full HTTP Data as JSONObject
-                JSONObject reader= new JSONObject(stream);
+                JSONObject reader = new JSONObject(stream);
 
                 JSONArray allGroups = reader.getJSONArray("grupe");
-                DatabaseHelper db = new DatabaseHelper();
+                DatabaseHelper db = new DatabaseHelper(context);
+
+                //db.addGrupeWithID(allGroups);
                 // Scan each.
                 for (int i = 0; i < allGroups.length(); i++) {
                     // Get single row.
