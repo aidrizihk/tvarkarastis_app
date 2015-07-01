@@ -1,0 +1,60 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fffbf6ff"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/vkk_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/vkk_logo_800" />
+
+    <TextView
+        android:id="@+id/whoIam"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/btn"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="Aš esu"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/iam_lecturer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dėstytojas" />
+
+        <Button
+            android:id="@+id/iam_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Studentas" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_confirm_whoiam_selection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Patvirtinti" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView" />
+
+</LinearLayout>
