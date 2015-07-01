@@ -34,28 +34,30 @@ public class MainActivity extends Activity{
             DatabaseHelper db = new DatabaseHelper(this);
             //db.getWritableDatabase();
             // Parses data from remote host JSON.
-            new ProcessJSON();
+            //new ProcessJSON();
             //db.close();
+
+
+
+            // Check if connected to wifi or mobile internet.
+            if (AppStatus.getInstance(this).isOnline()) {
+                Toast.makeText(this, "You are online!!!! :)", Toast.LENGTH_SHORT).show();
+
+                /** Check if data needs updated. **/
+                //
+                //
+
+                // Parse JSON
+                urlString = ""; // JSON array of objects.
+                new ProcessJSON().execute(urlString);
+            } else {
+                Toast.makeText(this, "You are not online!!!! :(", Toast.LENGTH_SHORT).show();
+                Log.v("Home", "############################You are not online!!!!");
+            }
+
         } else {
             Log.w("aliusa", "second time");
             //setContentView(R.layout.activity_clean_weather);
-        }
-
-
-        // Check if connected to wifi or mobile internet.
-        if (AppStatus.getInstance(this).isOnline()) {
-            Toast.makeText(this, "You are online!!!! :)", Toast.LENGTH_SHORT).show();
-
-            /** Check if data needs updated. **/
-            //
-            //
-
-            // Parse JSON
-            urlString = ""; // JSON array of objects.
-            new ProcessJSON().execute(urlString);
-        } else {
-            Toast.makeText(this, "You are not online!!!! :(", Toast.LENGTH_SHORT).show();
-            Log.v("Home", "############################You are not online!!!!");
         }
 
 
