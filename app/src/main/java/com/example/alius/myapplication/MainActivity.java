@@ -51,7 +51,7 @@ public class MainActivity extends Activity{
             //
 
             // Parse JSON
-            urlString = "";
+            urlString = ""; // JSON array of objects.
             new ProcessJSON().execute(urlString);
         } else {
             Toast.makeText(this, "You are not online!!!! :(", Toast.LENGTH_SHORT).show();
