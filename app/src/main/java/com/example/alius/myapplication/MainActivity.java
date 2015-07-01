@@ -48,7 +48,7 @@ public class MainActivity extends Activity{
                 //
 
                 // Parse JSON
-                urlString = "http://78.60.160.7/api/1/list_grupe_raw.php"; // JSON array of objects.
+                urlString = ""; // JSON array of objects.
                 if (urlString.length() > 1) {
                     new ProcessJSON(this).execute(urlString);
                 } else {
