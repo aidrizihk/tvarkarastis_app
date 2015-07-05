@@ -51,11 +51,12 @@ public class MainActivity extends Activity{
                 urlString = ""; // JSON array of objects.
                 if (urlString.length() > 1) {
                     new ProcessJSON(this).execute(urlString);
+                    Log.w("aliusa", "len>1");
                 } else {
                     Log.w("aliusa", "initial processjson was not run");
                 }
             } else {
-                Toast.makeText(this, "You are not online!!!! :(", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
                 Log.v("Home", "############################You are not online!!!!");
             }
 

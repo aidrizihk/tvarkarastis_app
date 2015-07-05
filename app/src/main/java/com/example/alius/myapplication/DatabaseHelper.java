@@ -21,20 +21,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     protected static final String grupeTable = "grupe";
     protected static final String colGrupeID = "grupeID";
     protected static final String colGrupePavadinimas = "pavadinimas";
-    protected static final String colElpastas = "elpastas";
-    protected static final String colFakultetasID = "fakultetas";
-    protected static final String colStudijosID = "studijos";
-    protected static final String colFormaID = "forma";
-    protected static final String colistojimas = "istojimas";
     private static final String CREATE_TABLE_GRUPE =
             "CREATE TABLE " + grupeTable + "("
                     + colGrupeID + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,"
                     + colGrupePavadinimas + " VARCHAR NOT NULL  DEFAULT (NULL),"
-                    + colElpastas + " VARCHAR,"
-                    + colFakultetasID + " INTEGER,"
-                    + colStudijosID + " INTEGER,"
-                    + colFormaID + " INTEGER,"
-                    + colistojimas + " INTEGER"
                     + ")";
     String INDEX = "CREATE UNIQUE INDEX locations_index ON "
             + grupeTable + " ("+colGrupePavadinimas+")";
@@ -93,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addGrupeWithID(int id, String pavadinimas, String elpastas, int fakultetas, int studijos, int forma, int istojimas) {
+    public void addGrupeWithID(int id, String pavadinimas) {
         // you can use INSERT only
         String sql = "INSERT OR REPLACE INTO " + grupeTable + " VALUES(?,?,?,?,?,?,?)";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -114,11 +104,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         stmt.bindLong(1, id);
         stmt.bindString(2, pavadinimas);
-        stmt.bindString(3, elpastas);
-        stmt.bindLong(4, fakultetas);
-        stmt.bindLong(5, studijos);
-        stmt.bindLong(6, forma);
-        stmt.bindLong(7, istojimas);
 
         stmt.execute();
         stmt.clearBindings();
@@ -129,5 +114,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         Log.w("aliusa", "įdėta \"" + pavadinimas + "\" grupė į sqlite");
+    }
+
+    public void addDestytojasWithID(int id, String vardas, String pavarde) {
+        // you can use INSERT only
+        String sql = "INSERT OR REPLACE INTO " + destytojasTable + " VALUES(?,?,?)";
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        /*
+         * According to the docs http://developer.android.com/reference/android/database/sqlite/SQLiteDatabase.html
+         * Writers should use beginTransactionNonExclusive() or beginTransactionWithListenerNonExclusive(SQLiteTransactionListener)
+         * to start a transaction. Non-exclusive mode allows database file to be in readable by other threads executing queries.
+         */
+        if (Build.VERSION.SDK_INT > 11) {
+            db.beginTransactionNonExclusive();
+        } else {
+            db.beginTransaction();
+        }
+
+        SQLiteStatement stmt = db.compileStatement(sql);
+
+
+        stmt.bindLong(1, id);
+        stmt.bindString(2, vardas);
+        stmt.bindString(3, pavarde);
+
+        stmt.execute();
+        stmt.clearBindings();
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        db.close();
+
+        Log.w("aliusa", "įdėta \"" + vardas +" "+ pavarde + "\" grupė į sqlite");
     }
 }

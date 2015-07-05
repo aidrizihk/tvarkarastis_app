@@ -41,30 +41,47 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
                 // Get the full HTTP Data as JSONObject
                 JSONObject reader = new JSONObject(stream);
 
-                JSONArray allGroups = reader.getJSONArray("grupe");
-                DatabaseHelper db = new DatabaseHelper(context);
-
-                //db.addGrupeWithID(allGroups);
-                // Scan each.
-                for (int i = 0; i < allGroups.length(); i++) {
-                    // Get single row.
-                    JSONObject all_grupe = allGroups.getJSONObject(i);
-
-                    // Insert values to SQLite.
-                    db.addGrupeWithID(
-                            all_grupe.getInt("id"),
-                            all_grupe.getString("pavadinimas"),
-                            all_grupe.getString("elpastas"),
-                            all_grupe.getInt("fakultetas_id"),
-                            all_grupe.getInt("studijos_id"),
-                            all_grupe.getInt("forma_id"),
-                            all_grupe.getInt("istojimas")
-                    );
-                }
+                parseGrupe(reader.getJSONArray("grupe"));
+                parseDestytojas(reader.getJSONArray("destytojas"));
             }catch(JSONException e){
                 e.printStackTrace();
             }
-
         } // if statement end
     } // onPostExecute() end
+
+    private void parseGrupe(JSONArray allGroups) throws JSONException {
+        // Grupe
+        DatabaseHelper db = new DatabaseHelper(context);
+        int len = allGroups.length();
+
+        // Scan each.
+        for (int i = 0; i < len; i++) {
+            // Get single row.
+            JSONObject all_grupe = allGroups.getJSONObject(i);
+
+            // Insert values to SQLite.
+            db.addGrupeWithID(
+                    all_grupe.getInt("id"),
+                    all_grupe.getString("pavadinimas")
+            );
+        }
+    }
+
+    private void parseDestytojas(JSONArray allDestytojas) throws JSONException {
+        DatabaseHelper db = new DatabaseHelper(context);
+        int len = allDestytojas.length();
+
+        // Scan each.
+        for (int i = 0; i < len; i++) {
+            // Get single row.
+            JSONObject all_destytojas = allDestytojas.getJSONObject(i);
+
+            // Insert values to SQLite.
+            db.addDestytojasWithID(
+                    all_destytojas.getInt("id"),
+                    all_destytojas.getString("vardas"),
+                    all_destytojas.getString("pavarde")
+            );
+        }
+    }
 } // ProcessJSON class end
