@@ -39,10 +39,10 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
         if(stream != null){
             try{
                 // Get the full HTTP Data as JSONObject
-                JSONObject reader = new JSONObject(stream);
-
-                parseGrupe(reader.getJSONArray("grupe"));
-                parseDestytojas(reader.getJSONArray("destytojas"));
+                //JSONArray reader = new JSONArray(stream);
+                JSONObject jsonArray = new JSONObject(stream);
+                parseGrupe(jsonArray.optJSONArray("grupe"));
+                parseDestytojas(jsonArray.optJSONArray("destytojas"));
             }catch(JSONException e){
                 e.printStackTrace();
             }
@@ -60,11 +60,12 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
             JSONObject all_grupe = allGroups.getJSONObject(i);
 
             // Insert values to SQLite.
-            db.addGrupeWithID(
+            db.insertGrupeWithID(
                     all_grupe.getInt("id"),
                     all_grupe.getString("pavadinimas")
             );
         }
+        db.close();
     }
 
     private void parseDestytojas(JSONArray allDestytojas) throws JSONException {
@@ -77,11 +78,12 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
             JSONObject all_destytojas = allDestytojas.getJSONObject(i);
 
             // Insert values to SQLite.
-            db.addDestytojasWithID(
+            db.insertDestytojasWithID(
                     all_destytojas.getInt("id"),
                     all_destytojas.getString("vardas"),
                     all_destytojas.getString("pavarde")
             );
         }
+        db.close();
     }
 } // ProcessJSON class end

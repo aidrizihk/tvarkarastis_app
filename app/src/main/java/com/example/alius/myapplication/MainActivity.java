@@ -23,7 +23,7 @@ public class MainActivity extends Activity{
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); // Get preferences file (0 = no option flags set)
         boolean firstRun = settings.getBoolean("firstRun", true); // Is it first run? If not specified, use "true"
         if (firstRun) {
-            Log.w("aliusa", "first time");
+            Log.w("aliusa", "### first time");
             setContentView(R.layout.activity_main);
             SharedPreferences.Editor editor = settings.edit(); // Open the editor for our settings
             editor.putBoolean("firstRun", false); // It is no longer the first run
@@ -42,6 +42,7 @@ public class MainActivity extends Activity{
             // Check if connected to wifi or mobile internet.
             if (AppStatus.getInstance(this).isOnline()) {
                 Toast.makeText(this, "You are online!!!! :)", Toast.LENGTH_SHORT).show();
+                Log.w("aliusa","### you're online!");
 
                 /** Check if data needs updated. **/
                 //
@@ -51,13 +52,13 @@ public class MainActivity extends Activity{
                 urlString = ""; // JSON array of objects.
                 if (urlString.length() > 1) {
                     new ProcessJSON(this).execute(urlString);
-                    Log.w("aliusa", "len>1");
+                    Log.w("aliusa", "### len>1");
                 } else {
-                    Log.w("aliusa", "initial processjson was not run");
+                    Log.w("aliusa", "### initial processjson was not run");
                 }
             } else {
                 Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
-                Log.v("Home", "############################You are not online!!!!");
+                Log.v("aliusa", "### You are not online!!!!");
             }
 
         } else {

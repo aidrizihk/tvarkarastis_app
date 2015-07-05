@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_GRUPE =
             "CREATE TABLE " + grupeTable + "("
                     + colGrupeID + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,"
-                    + colGrupePavadinimas + " VARCHAR NOT NULL  DEFAULT (NULL),"
+                    + colGrupePavadinimas + " VARCHAR NOT NULL  DEFAULT (NULL)"
                     + ")";
     String INDEX = "CREATE UNIQUE INDEX locations_index ON "
             + grupeTable + " ("+colGrupePavadinimas+")";
@@ -57,8 +57,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // -----------------------------MAIN-METHODS----------------------------------------------
 
+    private static DatabaseHelper instance;
+
+    public static synchronized DatabaseHelper getHelper(Context context) {
+        if (instance == null)
+            instance = new DatabaseHelper(context);
+        return instance;
+    }
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            // db.execSQL("PRAGMA foreign_keys=ON;");
+        }
     }
 
     public void onCreate(SQLiteDatabase db) {
@@ -83,9 +100,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addGrupeWithID(int id, String pavadinimas) {
+    public void insertGrupeWithID(int id, String pavadinimas) {
         // you can use INSERT only
-        String sql = "INSERT OR REPLACE INTO " + grupeTable + " VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT OR REPLACE INTO " + grupeTable + " VALUES(?,?)";
         SQLiteDatabase db = this.getWritableDatabase();
 
         /*
@@ -116,7 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.w("aliusa", "įdėta \"" + pavadinimas + "\" grupė į sqlite");
     }
 
-    public void addDestytojasWithID(int id, String vardas, String pavarde) {
+    public void insertDestytojasWithID(int id, String vardas, String pavarde) {
         // you can use INSERT only
         String sql = "INSERT OR REPLACE INTO " + destytojasTable + " VALUES(?,?,?)";
         SQLiteDatabase db = this.getWritableDatabase();
@@ -147,6 +164,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
 
-        Log.w("aliusa", "įdėta \"" + vardas +" "+ pavarde + "\" grupė į sqlite");
+        Log.w("aliusa", "įdėtas dėstytojas \"" + vardas +" "+ pavarde + "\" į sqlite");
     }
 }
