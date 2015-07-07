@@ -4,6 +4,7 @@ package com.example.alius.myapplication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,8 +73,10 @@ public class MainActivity extends Activity{
                 String whoIam2 = settings.getString("whoIam2", ""); // To whom it set.
                 Integer whoIam3 = settings.getInt("whoIam3", -1); // To which it's set.
                 if (whoIam && ((whoIam2 == "student") || (whoIam2 == "lecturer")) && (whoIam3 >=0)) {
-                    // TO DO
-                    // go to next activity
+                    // Declare Tvarkaraštis activity.
+                    Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
+                    // Starts Tvarkaraštis activity.
+                    startActivity(intent);
                 }
             }
 
@@ -88,29 +91,30 @@ public class MainActivity extends Activity{
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Onclick save to prefs
 
+                Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
+                // Starts Tvarkaraštis activity.
+                startActivity(intent);
             }
         });
 
-        ArrayList<String> listGrupe;
         TblGrupe tblGrupe = new TblGrupe(this);
-        listGrupe = tblGrupe.getPavadinimas();
+        final ArrayList<String> listGrupe = tblGrupe.getPavadinimas();
 
 
         // Creates alert dialog.
-        //final String[] option = {"Add","View","Change","Delete"};
+        //final String[] listGrupe = {"Add","View","Change","Delete"};
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, listGrupe);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_your_group);
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //System.out.println("selected: " + which);
                 // Display "Patvirtinti" button
-                // Onclick save to prefs
-                // Go to next activity.
-                Toast.makeText(getApplicationContext(), which, Toast.LENGTH_SHORT).show();
                 btnSubmit.setVisibility(View.VISIBLE);
+                String aaa = listGrupe.get(which);
+                Toast.makeText(getBaseContext(), aaa, Toast.LENGTH_SHORT).show();
             }
         });
         final AlertDialog a = builder.create();
