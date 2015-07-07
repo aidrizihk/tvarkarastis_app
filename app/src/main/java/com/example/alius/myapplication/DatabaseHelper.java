@@ -10,6 +10,7 @@ import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    //private DatabaseHelper db;
     // --------------------------------VARIABLES---------------------------------------------
 
     protected static final String DATABASE_NAME = "tvarkarastis";
@@ -18,9 +19,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Table Grupe.
      **/
-    protected static final String grupeTable = "grupe";
-    protected static final String colGrupeID = "grupeID";
-    protected static final String colGrupePavadinimas = "pavadinimas";
+    private static final String grupeTable = "grupe";
+    private static final String colGrupeID = "grupeID";
+    private static final String colGrupePavadinimas = "pavadinimas";
     private static final String CREATE_TABLE_GRUPE =
             "CREATE TABLE " + grupeTable + "("
                     + colGrupeID + " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL,"
@@ -28,6 +29,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + ")";
     String INDEX = "CREATE UNIQUE INDEX locations_index ON "
             + grupeTable + " ("+colGrupePavadinimas+")";
+
+    public static String getGrupeTable() {
+        return grupeTable;
+    }
+    public static String getColGrupePavadinimas() {
+        return colGrupePavadinimas;
+    }
 
     /**
      * Table Destytojas.
