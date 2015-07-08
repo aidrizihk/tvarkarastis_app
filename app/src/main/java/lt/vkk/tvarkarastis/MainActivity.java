@@ -76,7 +76,7 @@ public class MainActivity extends Activity{
                     new ProcessJSON(this).execute(urlString);
                     Log.w("aliusa", "### len>1");
                 } else {
-                    Log.w("aliusa", "### initial processjson was not run");
+                    Log.w("aliusa", "### initial processjson was not run. JSON not found.");
                 }
             } else {
                 Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
@@ -85,7 +85,7 @@ public class MainActivity extends Activity{
                 // Check if prefs set to lecturer/student and which.
                 Boolean whoIam = settings.getBoolean("whoIam", false); // Is it set?
                 String whoIam2 = settings.getString("whoIam2", ""); // To whom it set.
-                Integer whoIam3 = settings.getInt("whoIam3", -1); // To which it's set.
+                Integer whoIam3 = settings.getInt("whoIam3", -1); // To which it's set. ID of it.
                 if (whoIam && ((whoIam2 == "student") || (whoIam2 == "lecturer")) && (whoIam3 >=0)) {
                     // Declare Tvarkaraštis activity.
                     Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
