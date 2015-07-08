@@ -1,4 +1,4 @@
-package com.example.alius.myapplication;
+package lt.vkk.tvarkarastis;
 
 
 import android.app.Activity;
@@ -13,26 +13,40 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.alius.myapplication.table.TblGrupe;
-
 import java.util.ArrayList;
 
 public class MainActivity extends Activity{
     private static String urlString;
-    private DatabaseHelper db;
-    //private TblGrupe tblGrupe;
-
     public static final String PREFS_NAME = "tvarkarastisPrefs";
+    public static ArrayList<String> listGrupe = new ArrayList<>();
 
+    public void setListGrupe(ArrayList<String> listGrupe) {
+        this.listGrupe = listGrupe;
+    }
+    Button btnSubmit;
 
-    //private Button btnIamStudent = (Button) findViewById(R.id.iam_student);
-    //private Button btnIamLecturer = (Button) findViewById(R.id.iam_lecturer);
+    public AlertDialog makeBuilder() {
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, listGrupe);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.select_your_group);
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //btnSubmit.setVisibility(View.VISIBLE);
+                btnSubmit.setEnabled(true);
+                String aaa = listGrupe.get(which);
+                Toast.makeText(getBaseContext(), aaa, Toast.LENGTH_SHORT).show();
+            }
+        });
+        final AlertDialog alertdialog = builder.create();
+        return alertdialog;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
 
         // Check if app is runned first time.
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); // Get preferences file (0 = no option flags set)
@@ -45,7 +59,7 @@ public class MainActivity extends Activity{
             editor.commit(); // Save all changed settings
 
             // Connects and creates tables.
-            DatabaseHelper db = new DatabaseHelper(this);
+            //DatabaseHelper db = new DatabaseHelper(this);
 
             // Check if connected to wifi or mobile internet.
             if (AppStatus.getInstance(this).isOnline()) {
@@ -87,38 +101,16 @@ public class MainActivity extends Activity{
 
 
 
-        final Button btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam_selection);
+        //final Button btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Onclick save to prefs
-
                 Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
                 // Starts Tvarkaraštis activity.
                 startActivity(intent);
             }
         });
-
-        TblGrupe tblGrupe = new TblGrupe(this);
-        final ArrayList<String> listGrupe = tblGrupe.getPavadinimas();
-
-
-        // Creates alert dialog.
-        //final String[] listGrupe = {"Add","View","Change","Delete"};
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, listGrupe);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.select_your_group);
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Display "Patvirtinti" button
-                btnSubmit.setVisibility(View.VISIBLE);
-                String aaa = listGrupe.get(which);
-                Toast.makeText(getBaseContext(), aaa, Toast.LENGTH_SHORT).show();
-            }
-        });
-        final AlertDialog a = builder.create();
-
 
         final Button btnIamLecturer = (Button) findViewById(R.id.iam_lecturer);
         btnIamLecturer.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +124,8 @@ public class MainActivity extends Activity{
         btnIamStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                a.show();
+                AlertDialog alertdialog = makeBuilder();
+                alertdialog.show();
                 //Toast.makeText(getApplicationContext(), "student btn clicked", Toast.LENGTH_SHORT).show();
             }
         });

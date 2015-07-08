@@ -1,4 +1,4 @@
-package com.example.alius.myapplication.table;
+package lt.vkk.tvarkarastis.table;
 
 public class TblDalykas {
 

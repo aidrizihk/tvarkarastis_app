@@ -1,21 +1,24 @@
-package com.example.alius.myapplication;
+package lt.vkk.tvarkarastis;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import lt.vkk.tvarkarastis.table.TblGrupe;
+
 /**
- * Created by alius on 2015.07.01.
+ * Created by tvarkarastis on 2015.07.01.
  */
 class ProcessJSON extends AsyncTask<String, Void, String> {
 
 
     // Hashmap for ListView
     //ArrayList<HashMap<String, String>> contactList;
-    private Context context;
+
     protected String doInBackground(String... strings){
         String stream = null;
         String urlString = strings[0];
@@ -26,9 +29,9 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
         // Return the data from specified url
         return stream;
     }
-
-    public ProcessJSON(Context context) {
-        this.context = context;
+    private MainActivity activity;
+    public ProcessJSON(MainActivity activity) {
+        this.activity = activity;
     }
 
     protected void onPostExecute(String stream){
@@ -43,6 +46,12 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
                 JSONObject jsonArray = new JSONObject(stream);
                 parseGrupe(jsonArray.optJSONArray("grupe"));
                 parseDestytojas(jsonArray.optJSONArray("destytojas"));
+
+                DatabaseHelper db = new DatabaseHelper(activity);
+                final ArrayList<String> listGrupe;
+                TblGrupe tblGrupe = new TblGrupe(activity);
+                listGrupe = tblGrupe.getPavadinimas(db);
+                activity.setListGrupe(listGrupe);
             }catch(JSONException e){
                 e.printStackTrace();
             }
@@ -51,7 +60,7 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
 
     private void parseGrupe(JSONArray allGroups) throws JSONException {
         // Grupe
-        DatabaseHelper db = new DatabaseHelper(context);
+        DatabaseHelper db = new DatabaseHelper(activity);
         int len = allGroups.length();
 
         // Scan each.
@@ -69,7 +78,7 @@ class ProcessJSON extends AsyncTask<String, Void, String> {
     }
 
     private void parseDestytojas(JSONArray allDestytojas) throws JSONException {
-        DatabaseHelper db = new DatabaseHelper(context);
+        DatabaseHelper db = new DatabaseHelper(activity);
         int len = allDestytojas.length();
 
         // Scan each.

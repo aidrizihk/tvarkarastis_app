@@ -1,12 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/btnSubmit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#fffbf6ff"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".MainActivity">
+    tools:context="lt.vkk.tvarkarastis.MainActivity">
 
     <ImageView
         android:id="@+id/vkk_logo"
@@ -46,11 +45,11 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_confirm_whoiam_selection"
+        android:id="@+id/btn_confirm_whoiam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Patvirtinti"
-        android:visibility="gone" />
+        android:enabled="false"/>
 
 </LinearLayout>

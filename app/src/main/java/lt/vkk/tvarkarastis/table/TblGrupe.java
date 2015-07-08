@@ -1,12 +1,12 @@
-package com.example.alius.myapplication.table;
+package lt.vkk.tvarkarastis.table;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.example.alius.myapplication.DatabaseHelper;
-
 import java.util.ArrayList;
+
+import lt.vkk.tvarkarastis.DatabaseHelper;
 
 public class TblGrupe extends DatabaseHelper {
     //private DatabaseHelper db;
@@ -15,29 +15,32 @@ public class TblGrupe extends DatabaseHelper {
     public String pavadinimas;
 
     private static TblGrupe instance;
+
     public static synchronized TblGrupe getHelper(Context context) {
         if (instance == null)
             instance = new TblGrupe(context);
         return instance;
     }
+
     public static Context mContext;
+
     public TblGrupe(Context context) {
         super(context);
         this.mContext = context;
     }
 
-    public ArrayList<String> getPavadinimas() {
+    public ArrayList<String> getPavadinimas(DatabaseHelper db) {
         ArrayList<String> listGrupe = new ArrayList<>();
-        DatabaseHelper db = new DatabaseHelper(mContext);
-        String selectQuery = String.format("SELECT "+db.getColGrupePavadinimas()+" FROM "+ db.getGrupeTable());
+        //DatabaseHelper db = new DatabaseHelper(mContext);
+        String selectQuery = String.format("SELECT " + db.getColGrupePavadinimas() + " FROM " + db.getGrupeTable());
         Cursor cursor;
-        cursor = db.getReadableDatabase().rawQuery(selectQuery, null);
+        cursor = db.getWritableDatabase().rawQuery(selectQuery, null);
         //Log.w("aliusa", "### data: "+ data);
         //System.out.println("cursor.getColumnName: " + cursor.getColumnName(1));
         //System.out.println("cursor.getColumnName: " + cursor.getColumnName(1));
         try {
-            if( cursor != null && cursor.moveToFirst() ){
-                int num = cursor.getColumnIndex(db.getColGrupePavadinimas());
+            if (cursor != null && cursor.moveToFirst()) {
+                int num = cursor.getColumnIndex(getColGrupePavadinimas());
                 do {
                     String data = cursor.getString(num);
                     //System.out.println("data: " + data);
@@ -48,11 +51,11 @@ public class TblGrupe extends DatabaseHelper {
             Log.w("aliusa", e);
             //System.out.println(e);
         } finally {
-            cursor.close();
             db.close();
+            cursor.close();
         }
         return listGrupe;
-    };
+    }
     // Get data of all groups.
     /*public List<TblGrupe> getAllGrupe() {
         //DatabaseHelper db = new DatabaseHelper(Context);

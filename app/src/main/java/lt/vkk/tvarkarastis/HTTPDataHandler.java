@@ -1,15 +1,14 @@
-package com.example.alius.myapplication;
+package lt.vkk.tvarkarastis;
 
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-        import java.io.InputStream;
-        import java.io.BufferedInputStream;
-        import java.net.URL;
-        import java.io.IOException;
-
-        import java.io.InputStreamReader;
-        import java.io.BufferedReader;
-        import java.net.MalformedURLException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by cfsuman on 31/05/2015.

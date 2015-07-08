@@ -1,4 +1,4 @@
-package com.example.alius.myapplication;
+package lt.vkk.tvarkarastis;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -92,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(INDEX);
         db.execSQL(CREATE_TABLE_DESTYTOJAS);
         db.execSQL(CREATE_TABLE_DALYKAS);
-
+        //db.close();
         Log.w("aliusa", "Databases created");
     }
 

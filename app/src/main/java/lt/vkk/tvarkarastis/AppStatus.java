@@ -1,4 +1,4 @@
-package com.example.alius.myapplication;
+package lt.vkk.tvarkarastis;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
