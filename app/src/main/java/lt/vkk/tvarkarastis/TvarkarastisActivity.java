@@ -10,11 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import io.karim.MaterialTabs;
 import lt.vkk.tvarkarastis.dienos.StudentasFragment;
-import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
 public class TvarkarastisActivity extends AppCompatActivity {
 
@@ -69,13 +66,19 @@ public class TvarkarastisActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             int which = settings.getInt("whoIam3", 0);
-            switch(position){
-                case 0: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));
-                case 1: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,2));
-                case 2: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,3));
-                case 3: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,4));
-                case 4: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,5));
-                default: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));
+            switch (position) {
+                case 0:
+                    return StudentasFragment.newInstance(which, 1);
+                case 1:
+                    return StudentasFragment.newInstance(which, 2);
+                case 2:
+                    return StudentasFragment.newInstance(which, 3);
+                case 3:
+                    return StudentasFragment.newInstance(which, 4);
+                case 4:
+                    return StudentasFragment.newInstance(which, 5);
+                default:
+                    return StudentasFragment.newInstance(which, 1);
             }
         }
 

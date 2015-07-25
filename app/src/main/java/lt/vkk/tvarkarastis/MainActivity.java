@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 final ArrayList<Destytojas> items = (ArrayList<Destytojas>) Destytojas.getAllList();
 
                 // Construct adapter plugging in the array source
-                DestytojasAdapter adapter = new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, items);
+                final DestytojasAdapter adapter = new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, items);
 
                 // Build Alert Dialog.
                 dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -143,9 +143,9 @@ public class MainActivity extends AppCompatActivity {
                         int remoteIds = (int) (long) items.get(which).getId();
 
                         // Get selected Group name.
-                        String selectedGrupe = items.get(which).pavarde + ", " + items.get(which).vardas;
+                        String selected = items.get(which).pavarde + ", " + items.get(which).vardas;
                         // Return to user selected Group.
-                        Toast.makeText(MainActivity.this, selectedGrupe + " - " + remoteIds, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
                         // Save Selected Id.
                         setEditor("lecturer", remoteIds);
@@ -179,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
                         int remoteIds = (int) (long) items.get(which).getId();
 
                         // Get selected Group name.
-                        String selectedGrupe = items.get(which).pavadinimas;
+                        String selected = items.get(which).pavadinimas;
                         // Return to user selected Group.
-                        Toast.makeText(MainActivity.this, selectedGrupe, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
                         // Save Selected Id.
                         setEditor("student", remoteIds);

@@ -15,13 +15,20 @@ import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
 public class StudentasFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
+    //private static ArrayList<PaskaitosIrasas> list;
 
-    static ArrayList<PaskaitosIrasas> list;
+    private static int grupe;
+    private static int diena;
+    private static ArrayList<PaskaitosIrasas> list;
 
-    public static StudentasFragment newInstance(ArrayList<PaskaitosIrasas> paskaitos) {
+    public static StudentasFragment newInstance(int grupe_, int diena_) {
+        grupe = grupe_;
+        diena = diena_;
+
         StudentasFragment fragment = new StudentasFragment();
-        //Bundle args = new Bundle();
-        list = paskaitos;
+        Bundle args = new Bundle();
+        list = null;
+        list = (ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(grupe,diena);
         //args.putAll(args);
         //fragment.setArguments(args);
         return fragment;
