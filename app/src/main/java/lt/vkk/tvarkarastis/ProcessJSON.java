@@ -97,8 +97,8 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
                     item.pasirenkamasis = row.getInt("pasirenkamasis");
                     item.save();
 
-                    System.out.println("row.getString(\"pradzia\"):: " + row.getString("pradzia"));
-                    System.out.println("row.getString(\"pabaiga\"):: " + row.getString("pabaiga"));
+                    //System.out.println("row.getString(\"pradzia\"):: " + row.getString("pradzia"));
+                    //System.out.println("row.getString(\"pabaiga\"):: " + row.getString("pabaiga"));
                 }
                 ActiveAndroid.setTransactionSuccessful();
             } finally {

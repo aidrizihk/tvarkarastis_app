@@ -12,13 +12,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import it.neokree.materialtabs.MaterialTab;
-import it.neokree.materialtabs.MaterialTabHost;
-import it.neokree.materialtabs.MaterialTabListener;
+import io.karim.MaterialTabs;
 import lt.vkk.tvarkarastis.dienos.StudentasFragment;
 import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
-public class TvarkarastisActivity extends AppCompatActivity implements MaterialTabListener {
+public class TvarkarastisActivity extends AppCompatActivity {
 
     SharedPreferences settings;
 
@@ -28,7 +26,7 @@ public class TvarkarastisActivity extends AppCompatActivity implements MaterialT
      * android:noHistory="true"
      */
     int backButtonCount = 0;
-    private MaterialTabHost tabHost;
+    private MaterialTabs tabHost;
     private ViewPager viewPager;
 
     @Override
@@ -38,26 +36,14 @@ public class TvarkarastisActivity extends AppCompatActivity implements MaterialT
 
         settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
 
-        tabHost = (MaterialTabHost) this.findViewById(R.id.materialTabHost);
-        viewPager = (ViewPager) this.findViewById(R.id.viewPager);
-
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) this.findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                tabHost.setSelectedNavigationItem(position);
-            }
-        });
 
-        // insert all tabs from pagerAdapter data
-        for (int i = 0; i < adapter.getCount(); i++) {
-            tabHost.addTab(
-                    tabHost.newTab()
-                            .setText(adapter.getPageTitle(i))
-                            .setTabListener(this)
-            );
-        }
+        tabHost = (MaterialTabs) this.findViewById(R.id.material_tabs);
+        tabHost.setViewPager(viewPager);
+
+
     }
 
     public void onBackPressed() {
@@ -72,21 +58,6 @@ public class TvarkarastisActivity extends AppCompatActivity implements MaterialT
         }
     }
 
-    @Override
-    public void onTabSelected(MaterialTab materialTab) {
-        viewPager.setCurrentItem(materialTab.getPosition());
-    }
-
-    @Override
-    public void onTabReselected(MaterialTab materialTab) {
-        //viewPager.setCurrentItem(materialTab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(MaterialTab materialTab) {
-
-    }
-
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         int count = 5;
@@ -98,8 +69,6 @@ public class TvarkarastisActivity extends AppCompatActivity implements MaterialT
         @Override
         public Fragment getItem(int position) {
             int which = settings.getInt("whoIam3", 0);
-            //System.out.println("which:: " + which);
-            //System.out.println("select:: " + new Select().all().from(PaskaitosIrasas.class).where("grupe = ?",which).execute());
             switch(position){
                 case 0: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));
                 case 1: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,2));
@@ -108,9 +77,6 @@ public class TvarkarastisActivity extends AppCompatActivity implements MaterialT
                 case 4: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,5));
                 default: return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));
             }
-            //DummyFragment dummyFragment = new DummyFragment();
-            //return dummyFragment;
-            //return MyFragment.getInstance(position);
         }
 
         @Override
