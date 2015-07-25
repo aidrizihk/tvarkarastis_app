@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -28,14 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
     protected static final String PREFS_NAME = "tvarkarastisPrefs";
     // Temp for displaying
-    ListView listView;
+    //ListView listView;
     //Button btnSubmit;
     Context mContext;
     private AlertDialog.Builder dialogBuilder;
     SharedPreferences settings;
 
     public void parseData() {
-        String urlString = ""; // JSON array of objects.
+		String urlString = ""; // JSON array of objects.
         if (urlString.length() > 1) {
             new ProcessJSON(this).execute(urlString);
         } else {
