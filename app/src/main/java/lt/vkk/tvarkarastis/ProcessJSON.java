@@ -2,97 +2,119 @@ package lt.vkk.tvarkarastis;
 
 import android.os.AsyncTask;
 
+import com.activeandroid.ActiveAndroid;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import lt.vkk.tvarkarastis.table.TblGrupe;
+import lt.vkk.tvarkarastis.models.Destytojas;
+import lt.vkk.tvarkarastis.models.Grupe;
+import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
 /**
- * Created by tvarkarastis on 2015.07.01.
+ * Created by alius on 2015.07.21.
  */
-class ProcessJSON extends AsyncTask<String, Void, String> {
+public class ProcessJSON extends AsyncTask<String, Void, String> {
 
-
-    // Hashmap for ListView
-    //ArrayList<HashMap<String, String>> contactList;
-
-    protected String doInBackground(String... strings){
-        String stream = null;
-        String urlString = strings[0];
-
-        HTTPDataHandler hh = new HTTPDataHandler();
-        stream = hh.GetHTTPData(urlString);
-
-        // Return the data from specified url
-        return stream;
-    }
     private MainActivity activity;
+
     public ProcessJSON(MainActivity activity) {
         this.activity = activity;
     }
 
-    protected void onPostExecute(String stream){
-        //TextView tv = (TextView) findViewById(R.id.tv);
-        //tv.setText(stream);
+    protected String doInBackground(String... strings) {
+        String urlString = strings[0];
 
+        HTTPDataHandler hh = new HTTPDataHandler();
+        String stream = hh.GetHTTPData(urlString);
+        //System.out.println("stream:: " + stream);
         //..........Process JSON DATA................
-        if(stream != null){
-            try{
-                // Get the full HTTP Data as JSONObject
-                //JSONArray reader = new JSONArray(stream);
-                JSONObject jsonArray = new JSONObject(stream);
-                parseGrupe(jsonArray.optJSONArray("grupe"));
-                parseDestytojas(jsonArray.optJSONArray("destytojas"));
+        if (stream != null) try {
+            // Get the full HTTP Data as JSONObject
+            //JSONArray reader = new JSONArray(stream);
+            JSONObject jsonArray = new JSONObject(stream);
 
-                DatabaseHelper db = new DatabaseHelper(activity);
-                final ArrayList<String> listGrupe;
-                TblGrupe tblGrupe = new TblGrupe(activity);
-                listGrupe = tblGrupe.getPavadinimas(db);
-                activity.setListGrupe(listGrupe);
-            }catch(JSONException e){
-                e.printStackTrace();
+            ActiveAndroid.beginTransaction();
+            try {
+                // Grupė.
+                JSONArray array = jsonArray.optJSONArray("grupe");
+                int len = array.length();
+                for (int i = 0; i < len; i++) {
+                    JSONObject row = array.getJSONObject(i);
+                    Grupe item = new Grupe();
+                    item.remoteId = row.getInt("id");
+                    item.pavadinimas = row.getString("pavadinimas");
+                    item.save();
+                }
+                ActiveAndroid.setTransactionSuccessful();
+            } finally {
+                ActiveAndroid.endTransaction();
             }
-        } // if statement end
+
+            ActiveAndroid.beginTransaction();
+            try {
+                // Dėstytojas
+                JSONArray array = jsonArray.optJSONArray("destytojas");
+                int len = array.length();
+                for (int i = 0; i < len; i++) {
+                    JSONObject row = array.getJSONObject(i);
+                    Destytojas item = new Destytojas();
+                    item.remoteId = row.getInt("id");
+                    item.vardas = row.getString("vardas");
+                    item.pavarde = row.getString("pavarde");
+                    item.save();
+                }
+                ActiveAndroid.setTransactionSuccessful();
+            } finally {
+                ActiveAndroid.endTransaction();
+            }
+
+            ActiveAndroid.beginTransaction();
+            try {
+                // Savatės paskaita
+                JSONArray array = jsonArray.optJSONArray("savaites_paskaita");
+                int len = array.length();
+                for (int i = 0; i < len; i++) {
+                    JSONObject row = array.getJSONObject(i);
+                    PaskaitosIrasas item = new PaskaitosIrasas();
+                    item.remoteId = Integer.parseInt(row.getString("id"));
+                    item.savDiena = row.getInt("diena");
+                    item.pradzia = row.getString("pradzia");
+                    item.pabaiga = row.getString("pabaiga");
+
+                    int grupe = row.getInt("grupe");
+                    item.grupe = Grupe.getSelected(grupe);
+
+                    item.dalykas = row.getString("dalykas");
+
+                    int destytojas = row.getInt("destytojas");
+                    item.destytojas = Destytojas.getSelected(destytojas);
+
+                    item.auditorija = row.getString("auditorija");
+                    item.pogrupis = row.getInt("pogrupis");
+                    item.pasikatojamumas = row.getInt("pasikartojamumas");
+                    item.pasirenkamasis = row.getInt("pasirenkamasis");
+                    item.save();
+
+                    System.out.println("row.getString(\"pradzia\"):: " + row.getString("pradzia"));
+                    System.out.println("row.getString(\"pabaiga\"):: " + row.getString("pabaiga"));
+                }
+                ActiveAndroid.setTransactionSuccessful();
+            } finally {
+                ActiveAndroid.endTransaction();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // Return the data from specified url
+        //return stream;
+        //return stream;
+        return urlString;
+    }
+
+    protected void onPostExecute() {
     } // onPostExecute() end
 
-    private void parseGrupe(JSONArray allGroups) throws JSONException {
-        // Grupe
-        DatabaseHelper db = new DatabaseHelper(activity);
-        int len = allGroups.length();
-
-        // Scan each.
-        for (int i = 0; i < len; i++) {
-            // Get single row.
-            JSONObject all_grupe = allGroups.getJSONObject(i);
-
-            // Insert values to SQLite.
-            db.insertGrupeWithID(
-                    all_grupe.getInt("id"),
-                    all_grupe.getString("pavadinimas")
-            );
-        }
-        db.close();
-    }
-
-    private void parseDestytojas(JSONArray allDestytojas) throws JSONException {
-        DatabaseHelper db = new DatabaseHelper(activity);
-        int len = allDestytojas.length();
-
-        // Scan each.
-        for (int i = 0; i < len; i++) {
-            // Get single row.
-            JSONObject all_destytojas = allDestytojas.getJSONObject(i);
-
-            // Insert values to SQLite.
-            db.insertDestytojasWithID(
-                    all_destytojas.getInt("id"),
-                    all_destytojas.getString("vardas"),
-                    all_destytojas.getString("pavarde")
-            );
-        }
-        db.close();
-    }
 } // ProcessJSON class end

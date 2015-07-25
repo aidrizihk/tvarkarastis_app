@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="dienos">
+        <item>Pr</item>
+        <item>An</item>
+        <item>Tr</item>
+        <item>Kt</item>
+        <item>Pn</item>
+    </string-array>
+
+</resources>

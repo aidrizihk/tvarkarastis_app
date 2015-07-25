@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "lt.vkk.tvarkarastis"
-        minSdkVersion 10
+        minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
     buildTypes {
         release {
@@ -18,9 +18,15 @@ android {
         }
     }
 }
+repositories {
+    jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:support-v4:22.2.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'it.neokree:MaterialTabs:0.11'
+    compile 'com.parse.bolts:bolts-android:1.+'
 }
