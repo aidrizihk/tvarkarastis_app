@@ -10,8 +10,9 @@ import java.util.List;
 /**
  * Created by alius on 2015.07.21.
  */
-@Table(name = "Grupe", id = "remoteId")
+@Table(name = "Grupe")
 public class Grupe extends Model {
+    @Column(name = "remote_id", index = true)
     public int remoteId;
     @Column(name = "Pavadinimas", index = true)
     public String pavadinimas;
@@ -30,7 +31,7 @@ public class Grupe extends Model {
         // This is how you execute a query
         return new Select()
                 .from(Grupe.class)
-                .where("remoteId = ?", remoteId)
+                .where("remote_id = ?", remoteId)
                 .executeSingle();
     }
 
@@ -43,6 +44,6 @@ public class Grupe extends Model {
 
     @Override
     public String toString() {
-        return "remoteId: " + remoteId + ", pavadinimas: " + pavadinimas;
+        return "remote_id: " + remoteId + ", pavadinimas: " + pavadinimas;
     }
 }

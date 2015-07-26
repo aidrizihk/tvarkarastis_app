@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Get Selected remoteId, Cast selected ID to int.
-                        int remoteIds = (int) (long) items.get(which).getId();
+                        int remoteIds = (int) (long) items.get(which).remoteId;
 
                         // Get selected Group name.
                         String selected = items.get(which).pavarde + ", " + items.get(which).vardas;
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Get Selected remoteId, Cast selected ID to int.
-                        int remoteIds = (int) (long) items.get(which).getId();
+                        int remoteIds = (int) (long) items.get(which).remoteId;
 
                         // Get selected Group name.
                         String selected = items.get(which).pavadinimas;

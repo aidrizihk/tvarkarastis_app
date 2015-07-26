@@ -36,11 +36,13 @@ public class TvarkarastisActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager = (ViewPager) this.findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         tabHost = (MaterialTabs) this.findViewById(R.id.material_tabs);
         tabHost.setViewPager(viewPager);
-
-
+        tabHost.notifyDataSetChanged();
+        viewPager.setOffscreenPageLimit(0);
+        viewPager.setCurrentItem(4);
     }
 
     public void onBackPressed() {
@@ -78,7 +80,7 @@ public class TvarkarastisActivity extends AppCompatActivity {
                 case 4:
                     return StudentasFragment.newInstance(which, 5);
                 default:
-                    return StudentasFragment.newInstance(which, 1);
+                    return null;
             }
         }
 

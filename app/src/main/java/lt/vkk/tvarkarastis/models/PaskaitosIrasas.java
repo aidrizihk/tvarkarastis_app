@@ -10,8 +10,9 @@ import java.util.List;
 /**
  * Created by alius on 2015.07.21.
  */
-@Table(name = "PaskaitosIrasas", id = "remoteId")
+@Table(name = "PaskaitosIrasas")
 public class PaskaitosIrasas extends Model {
+    @Column(name = "remote_id", index = true)
     public int remoteId;
     @Column(name = "savDiena", index = true)
     public int savDiena;
@@ -56,7 +57,7 @@ public class PaskaitosIrasas extends Model {
         // This is how you execute a query
         return new Select()
                 .from(PaskaitosIrasas.class)
-                .orderBy("remoteId ASC")
+                .orderBy("remote_id ASC")
                 .execute();
     }
 
@@ -65,7 +66,7 @@ public class PaskaitosIrasas extends Model {
         return new Select()
                 .from(PaskaitosIrasas.class)
                 .where("grupe = ?", grupe.getId())
-                .orderBy("remoteId ASC")
+                .orderBy("remote_id ASC")
                 .execute();
     }
 
@@ -74,7 +75,7 @@ public class PaskaitosIrasas extends Model {
         return new Select()
                 .from(PaskaitosIrasas.class)
                 .where("grupe = ? AND savDiena = ?", grupe, savDiena)
-                .orderBy("remoteId ASC")
+                .orderBy("remote_id ASC")
                 .execute();
     }
 }

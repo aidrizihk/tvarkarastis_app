@@ -78,7 +78,7 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
                 for (int i = 0; i < len; i++) {
                     JSONObject row = array.getJSONObject(i);
                     PaskaitosIrasas item = new PaskaitosIrasas();
-                    item.remoteId = Integer.parseInt(row.getString("id"));
+                    item.remoteId = row.getInt("id");
                     item.savDiena = row.getInt("diena");
                     item.pradzia = row.getString("pradzia");
                     item.pabaiga = row.getString("pabaiga");

@@ -26,8 +26,7 @@ public class StudentasFragment extends Fragment {
         diena = diena_;
 
         StudentasFragment fragment = new StudentasFragment();
-        Bundle args = new Bundle();
-        list = null;
+        //Bundle args = new Bundle();
         list = (ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(grupe,diena);
         //args.putAll(args);
         //fragment.setArguments(args);
@@ -54,6 +53,7 @@ public class StudentasFragment extends Fragment {
         GrupePaskaitaAdapter adapter = new GrupePaskaitaAdapter(getActivity(), R.layout.listview_item_row_paskaita_studentas, list);
 
         lv.setAdapter(adapter);
+
 
         return v;
     }
