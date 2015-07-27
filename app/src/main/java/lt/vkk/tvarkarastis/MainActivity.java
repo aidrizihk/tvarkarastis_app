@@ -135,13 +135,15 @@ public class MainActivity extends AppCompatActivity {
                 dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Get Selected remoteId, Cast selected ID to int.
-                        int remoteId = (int) (long) items.get(which).getRemoteId();
+
 
                         // Get selected Group name.
                         String selected = items.get(which).getPavarde() + ", " + items.get(which).getVardas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
+
+                        // Get Selected remoteId, Cast selected ID to int.
+                        int remoteId = (int) (long) items.get(which).getRemoteId();
 
                         // Save Selected Id.
                         setEditor("lecturer", remoteId);
@@ -171,13 +173,14 @@ public class MainActivity extends AppCompatActivity {
                 dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Get Selected remoteId, Cast selected ID to int.
-                        int remoteId = (int) (long) items.get(which).getRemoteId();
 
                         // Get selected Group name.
                         String selected = items.get(which).getPavadinimas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
+
+                        // Get Selected remoteId, Cast selected ID to int.
+                        int remoteId = (int) (long) items.get(which).getRemoteId();
 
                         // Save Selected Id.
                         setEditor("student", remoteId);
