@@ -45,7 +45,7 @@ public class GrupeAdapter extends ArrayAdapter<Grupe> {
         }
 
         Grupe grupe = data.get(position);
-        holder.txtTitle.setText(grupe.pavadinimas);
+        holder.txtTitle.setText(grupe.getPavadinimas());
 
         return row;
     }

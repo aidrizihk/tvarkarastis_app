@@ -15,16 +15,10 @@ public class Grupe extends Model {
     @Column(name = "remote_id", index = true)
     public int remoteId;
     @Column(name = "Pavadinimas", index = true)
-    public String pavadinimas;
+    private String pavadinimas;
 
     public Grupe() {
         super();
-    }
-
-    public Grupe(int remoteId, String pavadinimas) {
-        super();
-        this.remoteId = remoteId;
-        this.pavadinimas = pavadinimas;
     }
 
     public static Grupe getSelected(int remoteId) {
@@ -44,6 +38,22 @@ public class Grupe extends Model {
 
     @Override
     public String toString() {
-        return "remote_id: " + remoteId + ", pavadinimas: " + pavadinimas;
+        return "remote_id: " + remoteId + ", pavadinimas: " + getPavadinimas();
     }
-}
+
+    public String getPavadinimas() {
+        return pavadinimas;
+    }
+
+    public void setRemoteId(int remoteId) {
+        this.remoteId = remoteId;
+    }
+
+    public void setPavadinimas(String pavadinimas) {
+        this.pavadinimas = pavadinimas;
+    }
+
+    public int getRemoteId() {
+        return remoteId;
+    }
+    }

@@ -78,4 +78,92 @@ public class PaskaitosIrasas extends Model {
                 .orderBy("remote_id ASC")
                 .execute();
     }
+
+    public void setRemoteId(int remoteId) {
+        this.remoteId = remoteId;
+    }
+
+    public void setSavDiena(int savDiena) {
+        this.savDiena = savDiena;
+    }
+
+    public void setPradzia(String pradzia) {
+        this.pradzia = pradzia;
+    }
+
+    public void setPabaiga(String pabaiga) {
+        this.pabaiga = pabaiga;
+    }
+
+    public void setGrupe(Grupe grupe) {
+        this.grupe = grupe;
+    }
+
+    public void setDalykas(String dalykas) {
+        this.dalykas = dalykas;
+    }
+
+    public void setDestytojas(Destytojas destytojas) {
+        this.destytojas = destytojas;
+    }
+
+    public void setAuditorija(String auditorija) {
+        this.auditorija = auditorija;
+    }
+
+    public void setPogrupis(int pogrupis) {
+        this.pogrupis = pogrupis;
+    }
+
+    public void setPasikatojamumas(int pasikatojamumas) {
+        this.pasikatojamumas = pasikatojamumas;
+    }
+
+    public void setPasirenkamasis(int pasirenkamasis) {
+        this.pasirenkamasis = pasirenkamasis;
+    }
+
+    public int getRemoteId() {
+        return remoteId;
+    }
+
+    public int getSavDiena() {
+        return savDiena;
+    }
+
+    public String getPradzia() {
+        return pradzia;
+    }
+
+    public String getPabaiga() {
+        return pabaiga;
+    }
+
+    public Grupe getGrupe() {
+        return grupe;
+    }
+
+    public String getDalykas() {
+        return dalykas;
+    }
+
+    public Destytojas getDestytojas() {
+        return destytojas;
+    }
+
+    public String getAuditorija() {
+        return auditorija;
+    }
+
+    public int getPogrupis() {
+        return pogrupis;
+    }
+
+    public int getPasikatojamumas() {
+        return pasikatojamumas;
+    }
+
+    public int getPasirenkamasis() {
+        return pasirenkamasis;
+    }
 }

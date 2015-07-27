@@ -44,7 +44,7 @@ public class DestytojasAdapter extends ArrayAdapter<Destytojas>{
         }
 
         Destytojas destytojas = data.get(position);
-        holder.txtTitle.setText(destytojas.pavarde + ", " + destytojas.vardas);
+        holder.txtTitle.setText(destytojas.getPavarde() + ", " + destytojas.getVardas());
 
         return row;
     }

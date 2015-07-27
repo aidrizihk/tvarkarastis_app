@@ -26,9 +26,6 @@ import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 public class MainActivity extends AppCompatActivity {
 
     protected static final String PREFS_NAME = "tvarkarastisPrefs";
-    // Temp for displaying
-    //ListView listView;
-    //Button btnSubmit;
     Context mContext;
     private AlertDialog.Builder dialogBuilder;
     SharedPreferences settings;
@@ -139,15 +136,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Get Selected remoteId, Cast selected ID to int.
-                        int remoteIds = (int) (long) items.get(which).remoteId;
+                        int remoteId = (int) (long) items.get(which).getRemoteId();
 
                         // Get selected Group name.
-                        String selected = items.get(which).pavarde + ", " + items.get(which).vardas;
+                        String selected = items.get(which).getPavarde() + ", " + items.get(which).getVardas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
                         // Save Selected Id.
-                        setEditor("lecturer", remoteIds);
+                        setEditor("lecturer", remoteId);
 
                         // Enable Submit Button.
                         btnSubmit.setEnabled(true);
@@ -175,15 +172,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Get Selected remoteId, Cast selected ID to int.
-                        int remoteIds = (int) (long) items.get(which).remoteId;
+                        int remoteId = (int) (long) items.get(which).getRemoteId();
 
                         // Get selected Group name.
-                        String selected = items.get(which).pavadinimas;
+                        String selected = items.get(which).getPavadinimas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
                         // Save Selected Id.
-                        setEditor("student", remoteIds);
+                        setEditor("student", remoteId);
 
                         // Enable Submit Button.
                         btnSubmit.setEnabled(true);

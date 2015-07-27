@@ -43,8 +43,8 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
                 for (int i = 0; i < len; i++) {
                     JSONObject row = array.getJSONObject(i);
                     Grupe item = new Grupe();
-                    item.remoteId = row.getInt("id");
-                    item.pavadinimas = row.getString("pavadinimas");
+                    item.setRemoteId(row.getInt("id"));
+                    item.setPavadinimas(row.getString("pavadinimas"));
                     item.save();
                 }
                 ActiveAndroid.setTransactionSuccessful();
@@ -60,9 +60,9 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
                 for (int i = 0; i < len; i++) {
                     JSONObject row = array.getJSONObject(i);
                     Destytojas item = new Destytojas();
-                    item.remoteId = row.getInt("id");
-                    item.vardas = row.getString("vardas");
-                    item.pavarde = row.getString("pavarde");
+                    item.setRemoteId(row.getInt("id"));
+                    item.setVardas(row.getString("vardas"));
+                    item.setPavarde(row.getString("pavarde"));
                     item.save();
                 }
                 ActiveAndroid.setTransactionSuccessful();
@@ -78,27 +78,24 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
                 for (int i = 0; i < len; i++) {
                     JSONObject row = array.getJSONObject(i);
                     PaskaitosIrasas item = new PaskaitosIrasas();
-                    item.remoteId = row.getInt("id");
-                    item.savDiena = row.getInt("diena");
-                    item.pradzia = row.getString("pradzia");
-                    item.pabaiga = row.getString("pabaiga");
+                    item.setRemoteId(row.getInt("id"));
+                    item.setSavDiena(row.getInt("diena"));
+                    item.setPradzia(row.getString("pradzia"));
+                    item.setPabaiga(row.getString("pabaiga"));
 
                     int grupe = row.getInt("grupe");
-                    item.grupe = Grupe.getSelected(grupe);
+                    item.setGrupe(Grupe.getSelected(grupe));
 
-                    item.dalykas = row.getString("dalykas");
+                    item.setDalykas(row.getString("dalykas"));
 
                     int destytojas = row.getInt("destytojas");
-                    item.destytojas = Destytojas.getSelected(destytojas);
+                    item.setDestytojas(Destytojas.getSelected(destytojas));
 
-                    item.auditorija = row.getString("auditorija");
-                    item.pogrupis = row.getInt("pogrupis");
-                    item.pasikatojamumas = row.getInt("pasikartojamumas");
-                    item.pasirenkamasis = row.getInt("pasirenkamasis");
+                    item.setAuditorija(row.getString("auditorija"));
+                    item.setPogrupis(row.getInt("pogrupis"));
+                    item.setPasikatojamumas(row.getInt("pasikartojamumas"));
+                    item.setPasirenkamasis(row.getInt("pasirenkamasis"));
                     item.save();
-
-                    //System.out.println("row.getString(\"pradzia\"):: " + row.getString("pradzia"));
-                    //System.out.println("row.getString(\"pabaiga\"):: " + row.getString("pabaiga"));
                 }
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
