@@ -65,7 +65,7 @@ public class TvarkarastisActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Norėdami išeiti dar kartą paspauskit Išeiti mygtuką.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Paspauskite dar kartą norėdami išeiti.", Toast.LENGTH_SHORT).show();
             backButtonCount++;
         }
     }
