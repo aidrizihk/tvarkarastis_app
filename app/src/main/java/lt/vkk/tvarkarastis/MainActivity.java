@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         this.paskaitos = paskaitos;
     }
 
+    // Creates SQLite database using ActiveAndroid library for given classes.
     public void CreateDatabase() {
         // ActiveAndroid config.
         Configuration.Builder configurationBuilder = new Configuration.Builder(this);
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         ActiveAndroid.initialize(this);
     }
 
+    // Check internet connection.
     public void checkInternet() {
         // Check if connected to wifi or mobile internet.
         if (AppStatus.getInstance(this).isOnline()) {
@@ -71,13 +73,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Parse JSON to ActiveAndroid.
             parseData();
-
-
         } else {
             Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
         }
     }
 
+    // Parses JSON data from given URL.
     public void parseData() {
 		String urlString = ""; // JSON array of objects.
         if (urlString.length() > 1) {
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Write to SharedPrefs who's, lecturer/student and which one of those selected.
     private void setEditor(String who, int which) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("whoIam2", who);
@@ -101,14 +103,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         CreateDatabase();
 
+        // Get preferences file (0 = no option flags set)
+        settings = getSharedPreferences(PREFS_NAME, 0);
 
-        settings = getSharedPreferences(PREFS_NAME, 0); // Get preferences file (0 = no option flags set)
-
-        //final Button btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
         btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
         btnIamLecturer = (Button) findViewById(R.id.iam_lecturer);
         btnIamStudent = (Button) findViewById(R.id.iam_student);
 
+        // Disables buttons while parsing data.
         btnSubmit.setEnabled(false);
         btnIamLecturer.setEnabled(false);
         btnIamStudent.setEnabled(false);
@@ -129,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Check if prefs set to lecturer/student and which.
             Boolean whoIam = settings.getBoolean("whoIam", false); // Is it set?
-            /*String whoIam2 = settings.getString("whoIam2", ""); // To whom it set. student/lecturer
-            Integer whoIam3 = settings.getInt("whoIam3", 0); // To which it's set. ID of it.*/
             if (whoIam/* && ((whoIam2 == "student") || (whoIam2 == "lecturer")) && (whoIam3 != 0)*/) {
                 // Declare Tvarkaraštis activity.
                 Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Onclick save to prefs
+                // Onclick save who/which to prefs
                 SharedPreferences.Editor editor = settings.edit(); // Open the editor for our settings
                 editor.putBoolean("whoIam", true); // It is no longer the first run
                 editor.commit(); // Save all changed settings
@@ -158,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
         btnIamLecturer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Query ActiveAndroid for list of data
-                //destytojas = (ArrayList<Destytojas>) Destytojas.getAllList();
-
                 // Construct adapter plugging in the array source
                 final DestytojasAdapter adapter = new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, destytojas);
 
@@ -170,8 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-
                         // Get selected Group name.
                         String selected = destytojas.get(which).getPavarde() + ", " + destytojas.get(which).getVardas();
                         // Return to user selected Group.
@@ -196,14 +191,8 @@ public class MainActivity extends AppCompatActivity {
         btnIamStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Query ActiveAndroid for list of data and cast to ArrayList.
-                //grupe = (ArrayList<Grupe>) Grupe.getAllList();
-                /*if (grupe.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "empty!!!!", Toast.LENGTH_SHORT).show();
-                }*/
-
                 // Construct adapter plugging in the array source
-                GrupeAdapter adapter = new GrupeAdapter(MainActivity.this, R.layout.listview_item_row, grupe);
+                final GrupeAdapter adapter = new GrupeAdapter(MainActivity.this, R.layout.listview_item_row, grupe);
 
                 // Build AlertDialog.
                 dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -211,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                 dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         // Get selected Group name.
                         String selected = grupe.get(which).getPavadinimas();
                         // Return to user selected Group.
@@ -242,23 +230,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
         // Take appropriate action for each action item click
         switch (item.getItemId()) {
+            // Refresh button
             case R.id.action_refresh:
-                // refresh
+                // Disables buttons while deleting, parsing data.
                 btnIamLecturer.setEnabled(false);
                 btnIamStudent.setEnabled(false);
                 btnSubmit.setEnabled(false);
+
+                // Deletes data from SQLite.
                 new Delete().from(PaskaitosIrasas.class).execute();
                 new Delete().from(Destytojas.class).execute();
                 new Delete().from(Grupe.class).execute();
-                //this.deleteDatabase("database.db");
-                //CreateDatabase();
+                // Check internet, parses JSON, sets objects.
                 checkInternet();
                 return true;
             default:
