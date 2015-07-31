@@ -52,8 +52,7 @@ public class PaskaitosIrasas extends Model {
         this.pasikatojamumas = pasikatojamumas;
         this.pasirenkamasis = pasirenkamasis;
     }
-
-    public static List<PaskaitosIrasas> getAll() {
+    public static List<PaskaitosIrasas> getAllList() {
         // This is how you execute a query
         return new Select()
                 .from(PaskaitosIrasas.class)

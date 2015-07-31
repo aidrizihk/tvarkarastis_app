@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import lt.vkk.tvarkarastis.models.Destytojas;
 import lt.vkk.tvarkarastis.models.Grupe;
 import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
@@ -21,6 +23,11 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
 
     public ProcessJSON(MainActivity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
     }
 
     protected String doInBackground(String... strings) {
@@ -107,11 +114,21 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
         }
         // Return the data from specified url
         //return stream;
-        //return stream;
         return urlString;
     }
 
-    protected void onPostExecute() {
-    } // onPostExecute() end
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        activity.setDestytojas((ArrayList<Destytojas>) Destytojas.getAllList());
+        activity.setGrupe((ArrayList<Grupe>) Grupe.getAllList());
+        activity.setPaskaitos((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllList());
+        activity.btnIamLecturer.setEnabled(true);
+        activity.btnIamStudent.setEnabled(true);
+    }
 
 } // ProcessJSON class end

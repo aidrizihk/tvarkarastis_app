@@ -36,6 +36,7 @@ public class Grupe extends Model {
                 .execute();
     }
 
+
     @Override
     public String toString() {
         return "remote_id: " + remoteId + ", pavadinimas: " + getPavadinimas();

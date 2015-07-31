@@ -8,12 +8,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Configuration;
+import com.activeandroid.query.Delete;
 
 import java.util.ArrayList;
 
@@ -27,8 +30,53 @@ public class MainActivity extends AppCompatActivity {
 
     protected static final String PREFS_NAME = "tvarkarastisPrefs";
     Context mContext;
-    private AlertDialog.Builder dialogBuilder;
     SharedPreferences settings;
+    ArrayList<Grupe> grupe;
+    ArrayList<Destytojas> destytojas;
+    ArrayList<PaskaitosIrasas> paskaitos;
+    private AlertDialog.Builder dialogBuilder;
+    Button btnSubmit;
+    Button btnIamLecturer;
+    Button btnIamStudent;
+
+    public void setGrupe(ArrayList<Grupe> grupe) {
+        this.grupe = grupe;
+    }
+
+    public void setDestytojas(ArrayList<Destytojas> destytojas) {
+        this.destytojas = destytojas;
+    }
+
+    public void setPaskaitos(ArrayList<PaskaitosIrasas> paskaitos) {
+        this.paskaitos = paskaitos;
+    }
+
+    public void CreateDatabase() {
+        // ActiveAndroid config.
+        Configuration.Builder configurationBuilder = new Configuration.Builder(this);
+        // Select classes for DB.
+        configurationBuilder.addModelClasses(Destytojas.class, Grupe.class, PaskaitosIrasas.class);
+        ActiveAndroid.initialize(this);
+    }
+
+    public void checkInternet() {
+        // Check if connected to wifi or mobile internet.
+        if (AppStatus.getInstance(this).isOnline()) {
+            //Toast.makeText(this, "You are online!!!! :)", Toast.LENGTH_SHORT).show();
+            //Log.w("aliusa", "### you're online!");
+
+            /** Check if data needs updated. **/
+            //
+            //
+
+            // Parse JSON to ActiveAndroid.
+            parseData();
+
+
+        } else {
+            Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public void parseData() {
 		String urlString = ""; // JSON array of objects.
@@ -39,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     private void setEditor(String who, int which) {
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("whoIam2", who);
@@ -47,26 +94,29 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CreateDatabase();
 
-        // ActiveAndroid config.
-        Configuration.Builder configurationBuilder = new Configuration.Builder(this);
-        // Select classes for DB.
-        configurationBuilder.addModelClasses(Destytojas.class, Grupe.class, PaskaitosIrasas.class);
-        ActiveAndroid.initialize(this);
 
         settings = getSharedPreferences(PREFS_NAME, 0); // Get preferences file (0 = no option flags set)
 
-        final Button btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
-        btnSubmit.setEnabled(false);
+        //final Button btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
+        btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
+        btnIamLecturer = (Button) findViewById(R.id.iam_lecturer);
+        btnIamStudent = (Button) findViewById(R.id.iam_student);
 
+        btnSubmit.setEnabled(false);
+        btnIamLecturer.setEnabled(false);
+        btnIamStudent.setEnabled(false);
 
         // Check if app is runned first time.
         boolean firstRun = settings.getBoolean("firstRun", true); // Is it first run? If not specified, use "true"
         if (firstRun) {
+
             mContext = getApplicationContext();
 
             Log.w("aliusa", "### first time");
@@ -74,23 +124,8 @@ public class MainActivity extends AppCompatActivity {
             editor.putBoolean("firstRun", false); // It is no longer the first run
             editor.commit(); // Save all changed settings
 
+            checkInternet();
 
-            // Check if connected to wifi or mobile internet.
-            if (AppStatus.getInstance(this).isOnline()) {
-                //Toast.makeText(this, "You are online!!!! :)", Toast.LENGTH_SHORT).show();
-                //Log.w("aliusa", "### you're online!");
-
-                /** Check if data needs updated. **/
-                //
-                //
-
-                // Parse JSON to ActiveAndroid.
-                parseData();
-
-
-            } else {
-                Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
-            }
         } else {
             // Check if prefs set to lecturer/student and which.
             Boolean whoIam = settings.getBoolean("whoIam", false); // Is it set?
@@ -119,15 +154,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnIamLecturer = (Button) findViewById(R.id.iam_lecturer);
+
         btnIamLecturer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Query ActiveAndroid for list of data
-                final ArrayList<Destytojas> items = (ArrayList<Destytojas>) Destytojas.getAllList();
+                //destytojas = (ArrayList<Destytojas>) Destytojas.getAllList();
 
                 // Construct adapter plugging in the array source
-                final DestytojasAdapter adapter = new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, items);
+                final DestytojasAdapter adapter = new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, destytojas);
 
                 // Build Alert Dialog.
                 dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -138,12 +173,12 @@ public class MainActivity extends AppCompatActivity {
 
 
                         // Get selected Group name.
-                        String selected = items.get(which).getPavarde() + ", " + items.get(which).getVardas();
+                        String selected = destytojas.get(which).getPavarde() + ", " + destytojas.get(which).getVardas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
                         // Get Selected remoteId, Cast selected ID to int.
-                        int remoteId = (int) (long) items.get(which).getRemoteId();
+                        int remoteId = (int) (long) destytojas.get(which).getRemoteId();
 
                         // Save Selected Id.
                         setEditor("lecturer", remoteId);
@@ -157,15 +192,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnIamStudent = (Button) findViewById(R.id.iam_student);
+
         btnIamStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Query ActiveAndroid for list of data and cast to ArrayList.
-                final ArrayList<Grupe> items = (ArrayList<Grupe>) Grupe.getAllList();
+                //grupe = (ArrayList<Grupe>) Grupe.getAllList();
+                /*if (grupe.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "empty!!!!", Toast.LENGTH_SHORT).show();
+                }*/
 
                 // Construct adapter plugging in the array source
-                GrupeAdapter adapter = new GrupeAdapter(MainActivity.this, R.layout.listview_item_row, items);
+                GrupeAdapter adapter = new GrupeAdapter(MainActivity.this, R.layout.listview_item_row, grupe);
 
                 // Build AlertDialog.
                 dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -175,12 +213,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         // Get selected Group name.
-                        String selected = items.get(which).getPavadinimas();
+                        String selected = grupe.get(which).getPavadinimas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
                         // Get Selected remoteId, Cast selected ID to int.
-                        int remoteId = (int) (long) items.get(which).getRemoteId();
+                        int remoteId = (int) (long) grupe.get(which).getRemoteId();
 
                         // Save Selected Id.
                         setEditor("student", remoteId);
@@ -195,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-/*    @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -207,13 +245,24 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Take appropriate action for each action item click
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                // refresh
+                btnIamLecturer.setEnabled(false);
+                btnIamStudent.setEnabled(false);
+                btnSubmit.setEnabled(false);
+                new Delete().from(PaskaitosIrasas.class).execute();
+                new Delete().from(Destytojas.class).execute();
+                new Delete().from(Grupe.class).execute();
+                //this.deleteDatabase("database.db");
+                //CreateDatabase();
+                checkInternet();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
-    }*/
+    }
 }
