@@ -9,27 +9,26 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import lt.vkk.tvarkarastis.R;
 import lt.vkk.tvarkarastis.adapters.GrupePaskaitaAdapter;
 import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
 public class StudentasFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    //private static ArrayList<PaskaitosIrasas> list;
 
-    private static int grupe;
-    private static int diena;
-    private static ArrayList<PaskaitosIrasas> list;
+    private static final String ARG_LIST = "list";
 
-    public static StudentasFragment newInstance(int grupe_, int diena_) {
-        grupe = grupe_;
-        diena = diena_;
+    @Bind(R.id.listViewStudentas)
+    ListView mListView;
 
+    private ArrayList<PaskaitosIrasas> list;
+
+    public static StudentasFragment newInstance(ArrayList<PaskaitosIrasas> list) {
         StudentasFragment fragment = new StudentasFragment();
-        //Bundle args = new Bundle();
-        list = (ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(grupe,diena);
-        //args.putAll(args);
-        //fragment.setArguments(args);
+        Bundle args = new Bundle();
+        args.putParcelableArrayList(ARG_LIST, list);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -40,22 +39,16 @@ public class StudentasFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        list = getArguments().getParcelableArrayList(ARG_LIST);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.fragment_studentas, container, false);
-
-        ListView lv = (ListView)v.findViewById(R.id.listViewStudentas);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_studentas, container, false);
+        ButterKnife.bind(this, rootView);
         GrupePaskaitaAdapter adapter = new GrupePaskaitaAdapter(getActivity(), R.layout.listview_item_row_paskaita_studentas, list);
-
-        lv.setAdapter(adapter);
-
-
-        return v;
+        mListView.setAdapter(adapter);
+        return rootView;
     }
 
 }

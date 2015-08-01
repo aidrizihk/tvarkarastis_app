@@ -11,46 +11,54 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import io.karim.MaterialTabs;
 import lt.vkk.tvarkarastis.dienos.StudentasFragment;
-import lt.vkk.tvarkarastis.models.Grupe;
+import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
 public class TvarkarastisActivity extends AppCompatActivity {
 
     SharedPreferences settings;
     int backButtonCount = 0;
-    private MaterialTabs tabHost;
-    private ViewPager viewPager;
+
+    @Bind(R.id.material_tabs)
+    MaterialTabs mMaterialTabs;
+
+    @Bind(R.id.viewPager)
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tvarkarastis);
+        ButterKnife.bind(this);
 
         settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
 
         // Scan which group selected.
-        int which = settings.getInt("whoIam3", 0);
+        //int which = settings.getInt("whoIam3", 0);
         // Scan group name.
-        String grupeName = Grupe.getSelected(which).getPavadinimas();
+        //String grupeName = Grupe.getSelected(which).getPavadinimas();
         // For Some reason crashes and setTitle returns null.
         // Set custom ActionBar.
         //ActionBar ab = getActionBar();
         //ab.setTitle(grupeName);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager = (ViewPager) this.findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        //viewPager = (ViewPager) this.findViewById(R.id.viewPager);
+        mViewPager.setAdapter(adapter);
 
-        tabHost = (MaterialTabs) this.findViewById(R.id.material_tabs);
-        tabHost.setViewPager(viewPager);
-        // ?
-        tabHost.notifyDataSetChanged();
+
+        mMaterialTabs.setViewPager(mViewPager);
+
         // Set cached side Tabs limit to 0.
-        viewPager.setOffscreenPageLimit(0);
+        //mViewPager.setOffscreenPageLimit(0);
+
         // Set default opened Tab to Friday
-        viewPager.setCurrentItem(4);
+        //mViewPager.setCurrentItem(4);
     }
 
     /**
@@ -83,17 +91,18 @@ public class TvarkarastisActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             int which = settings.getInt("whoIam3", 0);
+            System.out.println("(ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1):: " + PaskaitosIrasas.getAllbyGrupe(which,1).get(2).toString());
             switch (position) {
                 case 0:
-                    return StudentasFragment.newInstance(which, 1);
+                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));
                 case 1:
-                    return StudentasFragment.newInstance(which, 2);
+                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,2));
                 case 2:
-                    return StudentasFragment.newInstance(which, 3);
+                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,3));
                 case 3:
-                    return StudentasFragment.newInstance(which, 4);
+                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,4));
                 case 4:
-                    return StudentasFragment.newInstance(which, 5);
+                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,5));
                 default:
                     return null;
             }
@@ -111,8 +120,8 @@ public class TvarkarastisActivity extends AppCompatActivity {
         }
     }
 
-
-/*    @Override
+/*
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -133,7 +142,7 @@ public class TvarkarastisActivity extends AppCompatActivity {
                 new Delete().from(PaskaitosIrasas.class).execute();
                 new Delete().from(Destytojas.class).execute();
                 new Delete().from(Grupe.class).execute();
-                activity.checkInternet();
+                mainActivity.checkInternet();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

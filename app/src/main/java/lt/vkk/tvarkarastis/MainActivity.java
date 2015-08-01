@@ -20,6 +20,8 @@ import com.activeandroid.query.Delete;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import lt.vkk.tvarkarastis.adapters.DestytojasAdapter;
 import lt.vkk.tvarkarastis.adapters.GrupeAdapter;
 import lt.vkk.tvarkarastis.models.Destytojas;
@@ -35,8 +37,14 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Destytojas> destytojas;
     ArrayList<PaskaitosIrasas> paskaitos;
     private AlertDialog.Builder dialogBuilder;
+
+    @Bind(R.id.btn_confirm_whoiam)
     Button btnSubmit;
+
+    @Bind(R.id.btn_iam_lecturer)
     Button btnIamLecturer;
+
+    @Bind(R.id.btn_iam_student)
     Button btnIamStudent;
 
     public void setGrupe(ArrayList<Grupe> grupe) {
@@ -101,14 +109,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         CreateDatabase();
 
         // Get preferences file (0 = no option flags set)
         settings = getSharedPreferences(PREFS_NAME, 0);
-
-        btnSubmit = (Button) findViewById(R.id.btn_confirm_whoiam);
-        btnIamLecturer = (Button) findViewById(R.id.iam_lecturer);
-        btnIamStudent = (Button) findViewById(R.id.iam_student);
 
         // Disables buttons while parsing data.
         btnSubmit.setEnabled(false);
@@ -153,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
         btnIamLecturer.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,8 @@
 package lt.vkk.tvarkarastis.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -11,7 +14,7 @@ import java.util.List;
  * Created by alius on 2015.07.21.
  */
 @Table(name = "PaskaitosIrasas")
-public class PaskaitosIrasas extends Model {
+public class PaskaitosIrasas extends Model implements Parcelable {
     @Column(name = "remote_id", index = true)
     public int remoteId;
     @Column(name = "savDiena", index = true)
@@ -52,6 +55,31 @@ public class PaskaitosIrasas extends Model {
         this.pasikatojamumas = pasikatojamumas;
         this.pasirenkamasis = pasirenkamasis;
     }
+
+    protected PaskaitosIrasas(Parcel in) {
+        remoteId = in.readInt();
+        savDiena = in.readInt();
+        pradzia = in.readString();
+        pabaiga = in.readString();
+        dalykas = in.readString();
+        auditorija = in.readString();
+        pogrupis = in.readInt();
+        pasikatojamumas = in.readInt();
+        pasirenkamasis = in.readInt();
+    }
+
+    public static final Creator<PaskaitosIrasas> CREATOR = new Creator<PaskaitosIrasas>() {
+        @Override
+        public PaskaitosIrasas createFromParcel(Parcel in) {
+            return new PaskaitosIrasas(in);
+        }
+
+        @Override
+        public PaskaitosIrasas[] newArray(int size) {
+            return new PaskaitosIrasas[size];
+        }
+    };
+
     public static List<PaskaitosIrasas> getAllList() {
         // This is how you execute a query
         return new Select()
@@ -164,5 +192,24 @@ public class PaskaitosIrasas extends Model {
 
     public int getPasirenkamasis() {
         return pasirenkamasis;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(remoteId);
+        dest.writeInt(savDiena);
+        dest.writeString(pradzia);
+        dest.writeString(pabaiga);
+        dest.writeString(dalykas);
+        dest.writeString(auditorija);
+        dest.writeInt(pogrupis);
+        dest.writeInt(pasikatojamumas);
+        dest.writeInt(pasirenkamasis);
     }
 }

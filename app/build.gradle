@@ -3,19 +3,20 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "lt.vkk.tvarkarastis"
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 1
-        versionName "0.1"
+        versionName '0.1'
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 repositories {
@@ -28,4 +29,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'io.karim:materialtabs:2.0.2'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }
