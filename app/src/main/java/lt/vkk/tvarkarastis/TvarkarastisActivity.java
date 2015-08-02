@@ -29,14 +29,13 @@ public class TvarkarastisActivity extends AppCompatActivity {
     int backButtonCount = 0;
     int who;
     int which;
-    Destytojas destytojas;
-    Grupe grupe;
 
     @Bind(R.id.material_tabs)
     MaterialTabs mMaterialTabs;
 
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,27 +45,21 @@ public class TvarkarastisActivity extends AppCompatActivity {
 
         settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
         who = settings.getInt("whoIam2", 0); // 1 - lecturer, 2 - student, 0 - null
-        which = settings.getInt("whoIam3", 0);
-        /*if (who == 1) {
-            destytojas = Destytojas.getSelected(which);
+        which = settings.getInt("whoIam3", 0); // Scan which group selected.
+
+        String title;
+        if (who == 1) {
+            title = Destytojas.getSelected(which).getVardas() + " " + Destytojas.getSelected(which).getPavarde();
         } else {
-            grupe = Grupe.getSelected(which);
-        }*/
+            title = Grupe.getSelected(which).getPavadinimas();
+        }
 
-
-        // Scan which group selected.
-        //int which = settings.getInt("whoIam3", 0);
-        // Scan group name.
-        //String grupeName = Grupe.getSelected(which).getPavadinimas();
-        // For Some reason crashes and setTitle returns null.
-        // Set custom ActionBar.
-        //ActionBar ab = getActionBar();
-        //ab.setTitle(grupeName);
+        // Sets ActionBar title to group or lecturer.
+        getSupportActionBar().setTitle(title);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         //viewPager = (ViewPager) this.findViewById(R.id.viewPager);
         mViewPager.setAdapter(adapter);
-
 
         mMaterialTabs.setViewPager(mViewPager);
 
@@ -116,7 +109,6 @@ public class TvarkarastisActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // lecturer
             if (who == 1) {
-                System.out.println("destytojo paskaitos:: " + PaskaitosIrasas.getAllbyDestytojas(which, 1));
                 switch (position) {
                     case 0:
                         return DestytojasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyDestytojas(which, 1));
@@ -133,7 +125,6 @@ public class TvarkarastisActivity extends AppCompatActivity {
                 }
             } else {
                 // student
-                System.out.println("studento paskaitos:: " + PaskaitosIrasas.getAllbyGrupe(which, 1));
                 switch (position) {
                     case 0:
                         return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyGrupe(which, 1));
@@ -167,7 +158,7 @@ public class TvarkarastisActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_tvarkarastis, menu);
         return true;
     }
 
