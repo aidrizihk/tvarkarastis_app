@@ -92,11 +92,13 @@ public class ProcessJSON extends AsyncTask<String, Void, String> {
                     item.setPabaiga(row.getString("pabaiga"));
 
                     int grupe = row.getInt("grupe");
+                    item.setGrupe_int(grupe);
                     item.setGrupe(Grupe.getSelected(grupe));
 
                     item.setDalykas(row.getString("dalykas"));
 
                     int destytojas = row.getInt("destytojas");
+                    item.setDestytojas_int(destytojas);
                     item.setDestytojas(Destytojas.getSelected(destytojas));
 
                     item.setAuditorija(row.getString("auditorija"));

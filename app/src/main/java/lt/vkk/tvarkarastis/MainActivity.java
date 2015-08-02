@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Write to SharedPrefs who's, lecturer/student and which one of those selected.
-    private void setEditor(String who, int which) {
+    private void setEditor(int who, int which) {
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("whoIam2", who);
-        editor.putInt("whoIam3", which);
+        editor.putInt("whoIam2", who); // 1 - lecturer, 2 - student, 0 - none
+        editor.putInt("whoIam3", which); // Which of those is it.
         editor.commit();
     }
 
@@ -134,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Check if prefs set to lecturer/student and which.
             Boolean whoIam = settings.getBoolean("whoIam", false); // Is it set?
-            if (whoIam/* && ((whoIam2 == "student") || (whoIam2 == "lecturer")) && (whoIam3 != 0)*/) {
+            int whoIam2 = settings.getInt("whoIam2", 0); // To which it's set.
+            int whoIam3 = settings.getInt("whoIam3", 0); // To which it's set.
+            if (whoIam && (whoIam2 != 0) && (whoIam3 != 0)) {
                 // Declare Tvarkaraštis activity.
                 Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
                 // Starts Tvarkaraštis activity.
@@ -178,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                         int remoteId = (int) (long) destytojas.get(which).getRemoteId();
 
                         // Save Selected Id.
-                        setEditor("lecturer", remoteId);
+                        setEditor(1, remoteId); // 1 - lecturer
 
                         // Enable Submit Button.
                         btnSubmit.setEnabled(true);
@@ -211,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         int remoteId = (int) (long) grupe.get(which).getRemoteId();
 
                         // Save Selected Id.
-                        setEditor("student", remoteId);
+                        setEditor(2, remoteId); // 2 - student
 
                         // Enable Submit Button.
                         btnSubmit.setEnabled(true);

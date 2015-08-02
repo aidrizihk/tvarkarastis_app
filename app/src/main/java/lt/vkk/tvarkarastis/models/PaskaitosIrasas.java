@@ -15,6 +15,17 @@ import java.util.List;
  */
 @Table(name = "PaskaitosIrasas")
 public class PaskaitosIrasas extends Model implements Parcelable {
+    public static final Creator<PaskaitosIrasas> CREATOR = new Creator<PaskaitosIrasas>() {
+        @Override
+        public PaskaitosIrasas createFromParcel(Parcel in) {
+            return new PaskaitosIrasas(in);
+        }
+
+        @Override
+        public PaskaitosIrasas[] newArray(int size) {
+            return new PaskaitosIrasas[size];
+        }
+    };
     @Column(name = "remote_id", index = true)
     public int remoteId;
     @Column(name = "savDiena", index = true)
@@ -23,11 +34,15 @@ public class PaskaitosIrasas extends Model implements Parcelable {
     public String pradzia;
     @Column(name = "Pabaiga", index = true)
     public String pabaiga;
-    @Column(index = true)
+    @Column(name = "Grupe_int", index = true)
+    public int grupe_int;
+    @Column(name = "Grupe", index = true)
     public Grupe grupe;
     @Column(name = "Dalykas", index = true)
     public String dalykas;
-    @Column(index = true)
+    @Column(name = "Destytojas_int", index = true)
+    public int destytojas_int;
+    @Column(name = "Destytojas", index = true)
     public Destytojas destytojas;
     @Column(name = "Auditorija", index = true)
     public String auditorija;
@@ -37,23 +52,6 @@ public class PaskaitosIrasas extends Model implements Parcelable {
 
     public PaskaitosIrasas() {
         super();
-    }
-
-    public PaskaitosIrasas(int remoteId, int savDiena, String pradzia, String pabaiga, Grupe grupe,
-                           String dalykas, Destytojas destytojas, String auditorija, int pogrupis,
-                           int pasikatojamumas, int pasirenkamasis) {
-        super();
-        this.remoteId = remoteId;
-        this.savDiena = savDiena;
-        this.pradzia = pradzia;
-        this.pabaiga = pabaiga;
-        this.grupe = grupe;
-        this.dalykas = dalykas;
-        this.destytojas = destytojas;
-        this.auditorija = auditorija;
-        this.pogrupis = pogrupis;
-        this.pasikatojamumas = pasikatojamumas;
-        this.pasirenkamasis = pasirenkamasis;
     }
 
     protected PaskaitosIrasas(Parcel in) {
@@ -68,20 +66,7 @@ public class PaskaitosIrasas extends Model implements Parcelable {
         pasirenkamasis = in.readInt();
     }
 
-    public static final Creator<PaskaitosIrasas> CREATOR = new Creator<PaskaitosIrasas>() {
-        @Override
-        public PaskaitosIrasas createFromParcel(Parcel in) {
-            return new PaskaitosIrasas(in);
-        }
-
-        @Override
-        public PaskaitosIrasas[] newArray(int size) {
-            return new PaskaitosIrasas[size];
-        }
-    };
-
     public static List<PaskaitosIrasas> getAllList() {
-        // This is how you execute a query
         return new Select()
                 .from(PaskaitosIrasas.class)
                 .orderBy("remote_id ASC")
@@ -89,7 +74,6 @@ public class PaskaitosIrasas extends Model implements Parcelable {
     }
 
     public static List<PaskaitosIrasas> getAllbyGrupe(Grupe grupe) {
-        // This is how you execute a query
         return new Select()
                 .from(PaskaitosIrasas.class)
                 .where("grupe = ?", grupe.getId())
@@ -98,102 +82,124 @@ public class PaskaitosIrasas extends Model implements Parcelable {
     }
 
     public static List<PaskaitosIrasas> getAllbyGrupe(int grupe, int savDiena) {
-        // This is how you execute a query
         return new Select()
                 .from(PaskaitosIrasas.class)
-                .where("grupe = ? AND savDiena = ?", grupe, savDiena)
+                .where("Grupe_int = ? AND savDiena = ?", grupe, savDiena)
                 .orderBy("remote_id ASC")
                 .execute();
     }
 
-    public void setRemoteId(int remoteId) {
-        this.remoteId = remoteId;
+    public static List<PaskaitosIrasas> getAllbyDestytojas(int destytojas, int savDiena) {
+        return new Select()
+                .from(PaskaitosIrasas.class)
+                .where("Destytojas_int = ? AND savDiena = ?", destytojas, savDiena)
+                .orderBy("remote_id ASC")
+                .execute();
     }
 
-    public void setSavDiena(int savDiena) {
-        this.savDiena = savDiena;
+    public int getGrupe_int() {
+        return grupe_int;
     }
 
-    public void setPradzia(String pradzia) {
-        this.pradzia = pradzia;
+    public void setGrupe_int(int grupe_int) {
+        this.grupe_int = grupe_int;
     }
 
-    public void setPabaiga(String pabaiga) {
-        this.pabaiga = pabaiga;
+    public int getDestytojas_int() {
+        return destytojas_int;
     }
 
-    public void setGrupe(Grupe grupe) {
-        this.grupe = grupe;
-    }
-
-    public void setDalykas(String dalykas) {
-        this.dalykas = dalykas;
-    }
-
-    public void setDestytojas(Destytojas destytojas) {
-        this.destytojas = destytojas;
-    }
-
-    public void setAuditorija(String auditorija) {
-        this.auditorija = auditorija;
-    }
-
-    public void setPogrupis(int pogrupis) {
-        this.pogrupis = pogrupis;
-    }
-
-    public void setPasikatojamumas(int pasikatojamumas) {
-        this.pasikatojamumas = pasikatojamumas;
-    }
-
-    public void setPasirenkamasis(int pasirenkamasis) {
-        this.pasirenkamasis = pasirenkamasis;
+    public void setDestytojas_int(int destytojas_int) {
+        this.destytojas_int = destytojas_int;
     }
 
     public int getRemoteId() {
         return remoteId;
     }
 
+    public void setRemoteId(int remoteId) {
+        this.remoteId = remoteId;
+    }
+
     public int getSavDiena() {
         return savDiena;
+    }
+
+    public void setSavDiena(int savDiena) {
+        this.savDiena = savDiena;
     }
 
     public String getPradzia() {
         return pradzia;
     }
 
+    public void setPradzia(String pradzia) {
+        this.pradzia = pradzia;
+    }
+
     public String getPabaiga() {
         return pabaiga;
+    }
+
+    public void setPabaiga(String pabaiga) {
+        this.pabaiga = pabaiga;
     }
 
     public Grupe getGrupe() {
         return grupe;
     }
 
+    public void setGrupe(Grupe grupe) {
+        this.grupe = grupe;
+    }
+
     public String getDalykas() {
         return dalykas;
+    }
+
+    public void setDalykas(String dalykas) {
+        this.dalykas = dalykas;
     }
 
     public Destytojas getDestytojas() {
         return destytojas;
     }
 
+    public void setDestytojas(Destytojas destytojas) {
+        this.destytojas = destytojas;
+    }
+
     public String getAuditorija() {
         return auditorija;
+    }
+
+    public void setAuditorija(String auditorija) {
+        this.auditorija = auditorija;
     }
 
     public int getPogrupis() {
         return pogrupis;
     }
 
+    public void setPogrupis(int pogrupis) {
+        this.pogrupis = pogrupis;
+    }
+
     public int getPasikatojamumas() {
         return pasikatojamumas;
+    }
+
+    public void setPasikatojamumas(int pasikatojamumas) {
+        this.pasikatojamumas = pasikatojamumas;
     }
 
     public int getPasirenkamasis() {
         return pasirenkamasis;
     }
 
+    public void setPasirenkamasis(int pasirenkamasis) {
+        this.pasirenkamasis = pasirenkamasis;
+    }
 
     @Override
     public int describeContents() {

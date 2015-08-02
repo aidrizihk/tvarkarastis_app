@@ -24,7 +24,6 @@ public class Destytojas extends Model {
     }
 
     public static Destytojas getSelected(int remoteId) {
-        // This is how you execute a query
         return new Select()
                 .from(Destytojas.class)
                 .where("remote_id = ?", remoteId)

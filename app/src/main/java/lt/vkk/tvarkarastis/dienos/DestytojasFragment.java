@@ -12,24 +12,24 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import lt.vkk.tvarkarastis.R;
-import lt.vkk.tvarkarastis.adapters.GrupePaskaitaAdapterStudentas;
+import lt.vkk.tvarkarastis.adapters.GrupePaskaitaAdapterDestytojas;
 import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
-public class StudentasFragment extends Fragment {
+public class DestytojasFragment extends Fragment {
 
     private static final String ARG_LIST = "list";
 
-    @Bind(R.id.listViewStudentas)
+    @Bind(R.id.listViewDestytojas)
     ListView mListView;
 
     private ArrayList<PaskaitosIrasas> list;
 
-    public StudentasFragment() {
+    public DestytojasFragment() {
         // Required empty public constructor
     }
 
-    public static StudentasFragment newInstance(ArrayList<PaskaitosIrasas> list) {
-        StudentasFragment fragment = new StudentasFragment();
+    public static DestytojasFragment newInstance(ArrayList<PaskaitosIrasas> list) {
+        DestytojasFragment fragment = new DestytojasFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_LIST, list);
         fragment.setArguments(args);
@@ -44,9 +44,9 @@ public class StudentasFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_studentas, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_destytojas, container, false);
         ButterKnife.bind(this, rootView);
-        GrupePaskaitaAdapterStudentas adapter = new GrupePaskaitaAdapterStudentas(getActivity(), R.layout.listview_item_row_paskaita_studentas, list);
+        GrupePaskaitaAdapterDestytojas adapter = new GrupePaskaitaAdapterDestytojas(getActivity(), R.layout.listview_item_row_paskaita_destytojas, list);
         mListView.setAdapter(adapter);
         return rootView;
     }

@@ -16,12 +16,12 @@ import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 /**
  * Created by alius on 2015.07.24.
  */
-public class GrupePaskaitaAdapter extends ArrayAdapter<PaskaitosIrasas>{
+public class GrupePaskaitaAdapterDestytojas extends ArrayAdapter<PaskaitosIrasas> {
     Context context;
     int layoutResourceId;
     ArrayList<PaskaitosIrasas> data = null;
 
-    public GrupePaskaitaAdapter(Context context, int resource, ArrayList<PaskaitosIrasas> objects) {
+    public GrupePaskaitaAdapterDestytojas(Context context, int resource, ArrayList<PaskaitosIrasas> objects) {
         super(context, resource, objects);
         this.layoutResourceId = resource;
         this.context = context;
@@ -41,7 +41,7 @@ public class GrupePaskaitaAdapter extends ArrayAdapter<PaskaitosIrasas>{
             holder.txtPaskaitosPradzia = (TextView) row.findViewById(R.id.txtPaskaitosPradzia);
             holder.txtAuditorija = (TextView) row.findViewById(R.id.txtAuditorija);
             holder.txtPaskaitosPavadinimas = (TextView) row.findViewById(R.id.txtPaskaitosPavadinimas);
-            holder.txtDestytojas = (TextView) row.findViewById(R.id.txtDestytojas);
+            holder.txtGrupe = (TextView) row.findViewById(R.id.txtGrupe);
 
             row.setTag(holder);
         } else {
@@ -52,7 +52,7 @@ public class GrupePaskaitaAdapter extends ArrayAdapter<PaskaitosIrasas>{
         holder.txtPaskaitosPradzia.setText(paskaitosIrasas.getPradzia() + " - " + paskaitosIrasas.getPabaiga());
         holder.txtAuditorija.setText(paskaitosIrasas.getAuditorija());
         holder.txtPaskaitosPavadinimas.setText(paskaitosIrasas.getDalykas());
-        holder.txtDestytojas.setText(paskaitosIrasas.getDestytojas().getPavarde() + ", " + paskaitosIrasas.getDestytojas().getVardas());
+        holder.txtGrupe.setText(paskaitosIrasas.getGrupe().getPavadinimas());
         return row;
     }
 
@@ -60,6 +60,6 @@ public class GrupePaskaitaAdapter extends ArrayAdapter<PaskaitosIrasas>{
         TextView txtPaskaitosPradzia;
         TextView txtAuditorija;
         TextView txtPaskaitosPavadinimas;
-        TextView txtDestytojas;
+        TextView txtGrupe;
     }
 }

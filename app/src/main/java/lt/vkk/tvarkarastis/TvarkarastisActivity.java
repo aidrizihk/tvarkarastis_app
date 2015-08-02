@@ -12,17 +12,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.karim.MaterialTabs;
+import lt.vkk.tvarkarastis.dienos.DestytojasFragment;
 import lt.vkk.tvarkarastis.dienos.StudentasFragment;
+import lt.vkk.tvarkarastis.models.Destytojas;
+import lt.vkk.tvarkarastis.models.Grupe;
 import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
 
 public class TvarkarastisActivity extends AppCompatActivity {
 
     SharedPreferences settings;
     int backButtonCount = 0;
+    int who;
+    int which;
+    Destytojas destytojas;
+    Grupe grupe;
 
     @Bind(R.id.material_tabs)
     MaterialTabs mMaterialTabs;
@@ -37,6 +45,14 @@ public class TvarkarastisActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         settings = getSharedPreferences(MainActivity.PREFS_NAME, 0);
+        who = settings.getInt("whoIam2", 0); // 1 - lecturer, 2 - student, 0 - null
+        which = settings.getInt("whoIam3", 0);
+        /*if (who == 1) {
+            destytojas = Destytojas.getSelected(which);
+        } else {
+            grupe = Grupe.getSelected(which);
+        }*/
+
 
         // Scan which group selected.
         //int which = settings.getInt("whoIam3", 0);
@@ -57,8 +73,16 @@ public class TvarkarastisActivity extends AppCompatActivity {
         // Set cached side Tabs limit to 0.
         //mViewPager.setOffscreenPageLimit(0);
 
-        // Set default opened Tab to Friday
-        //mViewPager.setCurrentItem(4);
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        // Check if today is Sunday or Saturday
+        if (day == 1 || day == 7) {
+            // Set opened Tab to Monday
+            mViewPager.setCurrentItem(0);
+        } else {
+            // Set opened Tab to current day of the week
+            mViewPager.setCurrentItem(day - 2);
+        }
     }
 
     /**
@@ -90,20 +114,40 @@ public class TvarkarastisActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            int which = settings.getInt("whoIam3", 0);
-            switch (position) {
-                case 0:
-                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));
-                case 1:
-                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,2));
-                case 2:
-                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,3));
-                case 3:
-                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,4));
-                case 4:
-                    return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,5));
-                default:
-                    return null;
+            // lecturer
+            if (who == 1) {
+                System.out.println("destytojo paskaitos:: " + PaskaitosIrasas.getAllbyDestytojas(which, 1));
+                switch (position) {
+                    case 0:
+                        return DestytojasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyDestytojas(which, 1));
+                    case 1:
+                        return DestytojasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyDestytojas(which, 2));
+                    case 2:
+                        return DestytojasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyDestytojas(which, 3));
+                    case 3:
+                        return DestytojasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyDestytojas(which, 4));
+                    case 4:
+                        return DestytojasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyDestytojas(which, 5));
+                    default:
+                        return null;
+                }
+            } else {
+                // student
+                System.out.println("studento paskaitos:: " + PaskaitosIrasas.getAllbyGrupe(which, 1));
+                switch (position) {
+                    case 0:
+                        return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyGrupe(which, 1));
+                    case 1:
+                        return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyGrupe(which, 2));
+                    case 2:
+                        return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyGrupe(which, 3));
+                    case 3:
+                        return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyGrupe(which, 4));
+                    case 4:
+                        return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>) PaskaitosIrasas.getAllbyGrupe(which, 5));
+                    default:
+                        return null;
+                }
             }
         }
 

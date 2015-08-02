@@ -22,7 +22,6 @@ public class Grupe extends Model {
     }
 
     public static Grupe getSelected(int remoteId) {
-        // This is how you execute a query
         return new Select()
                 .from(Grupe.class)
                 .where("remote_id = ?", remoteId)
@@ -46,15 +45,15 @@ public class Grupe extends Model {
         return pavadinimas;
     }
 
-    public void setRemoteId(int remoteId) {
-        this.remoteId = remoteId;
-    }
-
     public void setPavadinimas(String pavadinimas) {
         this.pavadinimas = pavadinimas;
     }
 
     public int getRemoteId() {
         return remoteId;
+    }
+
+    public void setRemoteId(int remoteId) {
+        this.remoteId = remoteId;
     }
     }
