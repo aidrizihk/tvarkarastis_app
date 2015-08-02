@@ -91,7 +91,6 @@ public class TvarkarastisActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             int which = settings.getInt("whoIam3", 0);
-            System.out.println("(ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1):: " + PaskaitosIrasas.getAllbyGrupe(which,1).get(2).toString());
             switch (position) {
                 case 0:
                     return StudentasFragment.newInstance((ArrayList<PaskaitosIrasas>)PaskaitosIrasas.getAllbyGrupe(which,1));

@@ -36,16 +36,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Grupe> grupe;
     ArrayList<Destytojas> destytojas;
     ArrayList<PaskaitosIrasas> paskaitos;
-    private AlertDialog.Builder dialogBuilder;
-
     @Bind(R.id.btn_confirm_whoiam)
     Button btnSubmit;
-
     @Bind(R.id.btn_iam_lecturer)
     Button btnIamLecturer;
-
     @Bind(R.id.btn_iam_student)
     Button btnIamStudent;
+    private AlertDialog.Builder dialogBuilder;
 
     public void setGrupe(ArrayList<Grupe> grupe) {
         this.grupe = grupe;
@@ -88,11 +85,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Parses JSON data from given URL.
     public void parseData() {
-		String urlString = ""; // JSON array of objects.
+        String urlString = ""; // JSON array of objects.
         if (urlString.length() > 1) {
             new ProcessJSON(this).execute(urlString);
         } else {
             // TODO
+            Toast.makeText(this, "Kreipkitės į programuotoją, pamiršo įkelti duomenis!", Toast.LENGTH_SHORT).show();
         }
     }
 
