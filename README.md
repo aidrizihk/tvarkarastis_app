@@ -5,9 +5,4 @@ Naudota:
 - [JakeWharton/butterknife](https://github.com/JakeWharton/butterknife) (7.0.1) injection biblioteka
 
 ##### Ekrano vaizdai:
-###### Pagrindinis ekranas
-![Pagrindinis ekranas](/image1.png)
-###### Studento tvarkaraštis
-![Studento tvarkaraštis](/image2.png)
-###### Dėstytojo tvarkaraštis
-![Dėstytojo tvarkaraštis](/image3.png)
+![Pagrindinis ekranas](/image1.png) ![Studento tvarkaraštis](/image2.png) ![Dėstytojo tvarkaraštis](/image3.png)
