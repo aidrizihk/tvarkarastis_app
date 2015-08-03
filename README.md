@@ -4,13 +4,20 @@ Naudota:
 - [pizza/MaterialTabs](https://github.com/pizza/MaterialTabs) (2.0.2), Tab'ų biblioteka.
 - [JakeWharton/butterknife](https://github.com/JakeWharton/butterknife) (7.0.1) injection biblioteka
 
-### Ekrano vaizdai:
+---
+
+## Ekrano vaizdai:
 #### Pagrindinis ekranas
 ![](/image1.png)
+-
 #### Studento tvarkaraštis
 ![](/image2.png)
+-
 #### Dėstytojo tvarkaraštis
 ![](/image3.png)
 
-### Dizaino prototipai:
-####![](/image0.png)
+---
+
+## Dizaino prototipai:
+Sukurta naudojant Balsamiq Mockups.
+![](/image0.png)
