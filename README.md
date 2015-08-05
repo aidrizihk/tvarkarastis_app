@@ -6,6 +6,10 @@ Naudota:
 
 ---
 
+Duomenys nuskaitomi iš MySQL duomenų bazės per sugeneruotą JSON duomenų masyvą su PHP kreipiantis į MySQL per funkcijas aprašytas MySQL duomenų bazėje, taip sumažinant PHP kreipimosi laiką į DB.
+
+---
+
 ## Ekrano vaizdai:
 #### Pagrindinis ekranas
 ![](/image1.png)
