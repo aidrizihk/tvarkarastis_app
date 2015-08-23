@@ -3,22 +3,27 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
 
     <ImageView
         android:id="@+id/vkk_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="-60dp"
         android:src="@drawable/vkk_logo_800" />
 
     <TextView
         android:id="@+id/whoIam"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@+id/btn"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vkk_logo"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
         android:singleLine="true"
         android:text="Aš esu"
         android:textSize="20sp"
@@ -35,12 +40,14 @@
             android:id="@+id/btn_iam_lecturer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:text="Dėstytojas" />
 
         <Button
             android:id="@+id/btn_iam_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:text="Studentas" />
     </LinearLayout>
 
@@ -51,7 +58,6 @@
         android:layout_gravity="center_horizontal"
         android:enabled="false"
         android:text="Patvirtinti" />
-
 
 
 </LinearLayout>

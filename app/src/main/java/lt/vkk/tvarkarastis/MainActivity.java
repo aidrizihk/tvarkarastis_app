@@ -1,5 +1,6 @@
 package lt.vkk.tvarkarastis;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,23 +8,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Configuration;
 import com.activeandroid.query.Delete;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import lt.vkk.tvarkarastis.adapters.DestytojasAdapter;
-import lt.vkk.tvarkarastis.adapters.GrupeAdapter;
 import lt.vkk.tvarkarastis.models.Destytojas;
 import lt.vkk.tvarkarastis.models.Grupe;
 import lt.vkk.tvarkarastis.models.PaskaitosIrasas;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected static final String PREFS_NAME = "tvarkarastisPrefs";
     Context mContext;
-    SharedPreferences settings;
+    SharedPreferences mSettings;
     ArrayList<Grupe> grupe;
     ArrayList<Destytojas> destytojas;
     ArrayList<PaskaitosIrasas> paskaitos;
@@ -56,36 +58,20 @@ public class MainActivity extends AppCompatActivity {
         this.paskaitos = paskaitos;
     }
 
-    // Creates SQLite database using ActiveAndroid library for given classes.
-    public void CreateDatabase() {
-        // ActiveAndroid config.
-        Configuration.Builder configurationBuilder = new Configuration.Builder(this);
-        // Select classes for DB.
-        configurationBuilder.addModelClasses(Destytojas.class, Grupe.class, PaskaitosIrasas.class);
-        ActiveAndroid.initialize(this);
-    }
-
     // Check internet connection.
-    public void checkInternet() {
+    public boolean checkInternet() {
         // Check if connected to wifi or mobile internet.
         if (AppStatus.getInstance(this).isOnline()) {
-            //Toast.makeText(this, "You are online!!!! :)", Toast.LENGTH_SHORT).show();
-            //Log.w("aliusa", "### you're online!");
-
-            /** Check if data needs updated. **/
-            //
-            //
-
-            // Parse JSON to ActiveAndroid.
-            parseData();
+            return true;
         } else {
             Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 
     // Parses JSON data from given URL.
     public void parseData() {
-        String urlString = ""; // JSON array of objects.
+        String urlString = "http://78.60.160.7/tvarka/api/1/list.php"; // JSON array of objects.
         if (urlString.length() > 1) {
             new ProcessJSON(this).execute(urlString);
         } else {
@@ -96,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Write to SharedPrefs who's, lecturer/student and which one of those selected.
     private void setEditor(int who, int which) {
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences.Editor editor = mSettings.edit();
         editor.putInt("whoIam2", who); // 1 - lecturer, 2 - student, 0 - none
         editor.putInt("whoIam3", which); // Which of those is it.
         editor.commit();
@@ -107,35 +93,37 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Injects ButterKnife lib.
         ButterKnife.bind(this);
-        CreateDatabase();
+        ActiveAndroid.initialize(this);
 
         // Get preferences file (0 = no option flags set)
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        mSettings = getSharedPreferences(PREFS_NAME, 0);
 
-        // Disables buttons while parsing data.
-        btnSubmit.setEnabled(false);
-        btnIamLecturer.setEnabled(false);
-        btnIamStudent.setEnabled(false);
-
-        // Check if app is runned first time.
-        boolean firstRun = settings.getBoolean("firstRun", true); // Is it first run? If not specified, use "true"
+        // Check if app is runned first time, if not use "true"
+        boolean firstRun = mSettings.getBoolean("firstRun", true);
         if (firstRun) {
 
             mContext = getApplicationContext();
 
-            Log.w("aliusa", "### first time");
-            SharedPreferences.Editor editor = settings.edit(); // Open the editor for our settings
+            SharedPreferences.Editor editor = mSettings.edit(); // Open the editor for our settings
             editor.putBoolean("firstRun", false); // It is no longer the first run
             editor.commit(); // Save all changed settings
 
-            checkInternet();
+            // If connected to internet parse JSON to ActiveAndroid.
+            if (checkInternet() ) {
+                /** Check if data needs updated. **/
+                //
+                //
+                
 
+                parseData();
+            }
         } else {
             // Check if prefs set to lecturer/student and which.
-            Boolean whoIam = settings.getBoolean("whoIam", false); // Is it set?
-            int whoIam2 = settings.getInt("whoIam2", 0); // To which it's set.
-            int whoIam3 = settings.getInt("whoIam3", 0); // To which it's set.
+            Boolean whoIam = mSettings.getBoolean("whoIam", false); // Is it set?
+            int whoIam2 = mSettings.getInt("whoIam2", 0); // To which it's set.
+            int whoIam3 = mSettings.getInt("whoIam3", 0); // To which it's set.
             if (whoIam && (whoIam2 != 0) && (whoIam3 != 0)) {
                 // Declare Tvarkaraštis activity.
                 Intent intent = new Intent(getApplicationContext(), TvarkarastisActivity.class);
@@ -149,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Onclick save who/which to prefs
-                SharedPreferences.Editor editor = settings.edit(); // Open the editor for our settings
+                SharedPreferences.Editor editor = mSettings.edit(); // Open the editor for our settings
                 editor.putBoolean("whoIam", true); // It is no longer the first run
                 editor.commit(); // Save all changed settings
 
@@ -254,4 +242,89 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    public class DestytojasAdapter extends ArrayAdapter<Destytojas> {
+
+        Context context;
+        int layoutResourceId;
+        List<Destytojas> data = null;
+
+        public DestytojasAdapter(Context context, int resource, List<Destytojas> objects) {
+            super(context, resource, objects);
+            this.layoutResourceId = resource;
+            this.context = context;
+            this.data = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = convertView;
+            DestytojasHolder holder = null;
+
+            if (row == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                row = inflater.inflate(layoutResourceId, parent, false);
+
+                holder = new DestytojasHolder();
+                holder.txtTitle = (TextView) row.findViewById(R.id.txtTitle);
+
+                row.setTag(holder);
+            } else {
+                holder = (DestytojasHolder) row.getTag();
+            }
+
+            Destytojas destytojas = data.get(position);
+            holder.txtTitle.setText(destytojas.getPavarde() + ", " + destytojas.getVardas());
+
+            return row;
+        }
+
+        class DestytojasHolder {
+            TextView txtTitle;
+        }
+    }
+
+
+    public class GrupeAdapter extends ArrayAdapter<Grupe> {
+
+        Context context;
+        int layoutResourceId;
+        List<Grupe> data = null;
+
+        public GrupeAdapter(Context context, int resource, List<Grupe> objects) {
+            super(context, resource, objects);
+            this.layoutResourceId = resource;
+            this.context = context;
+            this.data = objects;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = convertView;
+            GrupeHolder holder = null;
+
+            if (row == null) {
+                LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+                row = inflater.inflate(layoutResourceId, parent, false);
+
+                holder = new GrupeHolder();
+                holder.txtTitle = (TextView) row.findViewById(R.id.txtTitle);
+
+                row.setTag(holder);
+            } else {
+                holder = (GrupeHolder) row.getTag();
+            }
+
+            Grupe grupe = data.get(position);
+            holder.txtTitle.setText(grupe.getPavadinimas());
+
+            return row;
+        }
+
+        class GrupeHolder {
+            TextView txtTitle;
+        }
+    }
+
 }
