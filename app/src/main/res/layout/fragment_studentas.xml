@@ -5,8 +5,8 @@
     tools:context="lt.vkk.tvarkarastis.dienos.StudentasFragment">
 
     <ListView
+        android:id="@+id/listViewStudentas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewStudentas"
         android:layout_weight="1" />
 </LinearLayout>

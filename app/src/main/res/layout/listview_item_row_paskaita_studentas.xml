@@ -1,43 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TableLayout
         android:id="@+id/tblPirmadienis"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center">
 
         <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtPaskaitosPradzia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:text="{09:20 - 10:50}" />
 
             <TextView
                 android:id="@+id/txtAuditorija"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="right"
                 android:singleLine="true"
-                android:gravity="right"/>
+                android:text="{22 aud.}" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtPaskaitosPavadinimas"
@@ -45,14 +44,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:singleLine="false"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                android:text="{Dalyko pavadinimas}"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 
         <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/txtDestytojas"
@@ -60,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:singleLine="false"
+                android:text="{Dėstytojas}"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </TableRow>
 

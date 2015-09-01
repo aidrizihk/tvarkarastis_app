@@ -13,4 +13,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="action_refresh">Atnaujinti</string>
+
+    <string-array name="drawer_text">
+        <item>Mano</item>
+        <item>Grupės</item>
+        <item>Dėstytojai</item>
+    </string-array>
 </resources>

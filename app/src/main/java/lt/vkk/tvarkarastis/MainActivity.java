@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
 import com.activeandroid.query.Delete;
 
 import java.util.ArrayList;
@@ -61,23 +62,20 @@ public class MainActivity extends AppCompatActivity {
     // Check internet connection.
     public boolean checkInternet() {
         // Check if connected to wifi or mobile internet.
-        if (AppStatus.getInstance(this).isOnline()) {
+        if (AppStatus.getInstance(mContext).isOnline()) {
             return true;
         } else {
-            Toast.makeText(this, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "Reikalingas interneto ryšys!", Toast.LENGTH_SHORT).show();
             return false;
         }
     }
 
     // Parses JSON data from given URL.
     public void parseData() {
-        String urlString = "http://78.60.160.7/tvarka/api/1/list.php"; // JSON array of objects.
-        if (urlString.length() > 1) {
-            new ProcessJSON(this).execute(urlString);
-        } else {
-            // TODO
-            Toast.makeText(this, "Kreipkitės į programuotoją, pamiršo įkelti duomenis!", Toast.LENGTH_SHORT).show();
-        }
+        String urlString = App.URL + App.PATH;
+        new ProcessJSON(this).execute(urlString);
+        // TODO: add http checker response.
+        //Toast.makeText(this, "Serveris išjungtas. Duomenų gauti neįmanoma!", Toast.LENGTH_SHORT).show();
     }
 
     // Write to SharedPrefs who's, lecturer/student and which one of those selected.
@@ -95,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Injects ButterKnife lib.
         ButterKnife.bind(this);
+
+
+        // ActiveAndroid config.
+        Configuration.Builder configurationBuilder = new Configuration.Builder(this);
+        // Select classes for DB.
+        configurationBuilder.addModelClasses(Destytojas.class, Grupe.class, PaskaitosIrasas.class);
+        // Creates SQLite database using ActiveAndroid library for given classes.
         ActiveAndroid.initialize(this);
 
         // Get preferences file (0 = no option flags set)
@@ -115,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 /** Check if data needs updated. **/
                 //
                 //
-                
+
 
                 parseData();
             }
@@ -151,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Construct adapter plugging in the array source
-                final DestytojasAdapter adapter = new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, destytojas);
+                final DestytojasAdapter adapter =
+                        new DestytojasAdapter(MainActivity.this, R.layout.listview_item_row, destytojas);
 
                 // Build Alert Dialog.
                 dialogBuilder = new AlertDialog.Builder(MainActivity.this);
@@ -160,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Get selected Group name.
-                        String selected = destytojas.get(which).getPavarde() + ", " + destytojas.get(which).getVardas();
+                        String selected =
+                                destytojas.get(which).getPavarde() + ", " + destytojas.get(which).getVardas();
                         // Return to user selected Group.
                         Toast.makeText(MainActivity.this, selected, Toast.LENGTH_SHORT).show();
 
@@ -220,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Take appropriate action for each action item click
@@ -243,7 +251,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+/*
+ *
+ *
+ *
+ *
+ */
     public class DestytojasAdapter extends ArrayAdapter<Destytojas> {
 
         Context context;
@@ -260,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
-            DestytojasHolder holder = null;
+            DestytojasHolder holder;
 
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -285,7 +298,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /*
+     *
+     *
+     *
+     *
+     */
     public class GrupeAdapter extends ArrayAdapter<Grupe> {
 
         Context context;
@@ -302,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View row = convertView;
-            GrupeHolder holder = null;
+            GrupeHolder holder;
 
             if (row == null) {
                 LayoutInflater inflater = ((Activity) context).getLayoutInflater();

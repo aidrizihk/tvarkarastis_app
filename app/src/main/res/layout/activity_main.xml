@@ -25,6 +25,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:singleLine="true"
+        android:textColor="@color/text_secondary"
         android:text="Aš esu"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -40,14 +41,20 @@
             android:id="@+id/btn_iam_lecturer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="4dp"
             android:enabled="false"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:text="Dėstytojas" />
 
         <Button
             android:id="@+id/btn_iam_student"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:elevation="4dp"
             android:enabled="false"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:text="Studentas" />
     </LinearLayout>
 
@@ -56,7 +63,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:elevation="4dp"
         android:enabled="false"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:text="Patvirtinti" />
 
 
