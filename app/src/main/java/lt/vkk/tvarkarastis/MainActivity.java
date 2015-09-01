@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Check internet connection.
-    public boolean checkInternet() {
+    public boolean isDeviceOnline() {
         // Check if connected to wifi or mobile internet.
         if (AppStatus.getInstance(mContext).isOnline()) {
             return true;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     // Parses JSON data from given URL.
     public void parseData() {
         String urlString = App.URL + App.PATH;
+        Log.v("ali", "url:: " + urlString);
         new ProcessJSON(this).execute(urlString);
         // TODO: add http checker response.
         //Toast.makeText(this, "Serveris išjungtas. Duomenų gauti neįmanoma!", Toast.LENGTH_SHORT).show();
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             editor.commit(); // Save all changed settings
 
             // If connected to internet parse JSON to ActiveAndroid.
-            if (checkInternet() ) {
+            if (isDeviceOnline()) {
                 /** Check if data needs updated. **/
                 //
                 //
@@ -244,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
                 new Delete().from(Destytojas.class).execute();
                 new Delete().from(Grupe.class).execute();
                 // Check internet, parses JSON, sets objects.
-                checkInternet();
+                if (isDeviceOnline())
+                    parseData();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

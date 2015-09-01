@@ -9,19 +9,19 @@ import android.util.Log;
 public class AppStatus {
 
     private static AppStatus instance = new AppStatus();
-    static Context context;
+    private static Context mContext;
     ConnectivityManager connectivityManager;
     NetworkInfo wifiInfo, mobileInfo;
     boolean connected = false;
 
-    public static AppStatus getInstance(Context ctx) {
-        context = ctx.getApplicationContext();
+    public static AppStatus getInstance(Context context) {
+        mContext = context.getApplicationContext();
         return instance;
     }
 
     public boolean isOnline() {
         try {
-            connectivityManager = (ConnectivityManager) context
+            connectivityManager = (ConnectivityManager) mContext
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
 
             NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
